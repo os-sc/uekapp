@@ -14,7 +14,7 @@ Gibt die Umfragen eines Benutzers zurück (Benutzer)
 
 Login Funktion(Benutzername und Passwort)
 
-* POST vote(i = ids)
+* POST vote(pid = pollId, a = ids)
 
 Funktion für Abstimmen
 
