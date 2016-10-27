@@ -1,0 +1,124 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "umf Docs", 
+            "title": "Home"
+        }, 
+        {
+            "location": "/#umf-docs", 
+            "text": "", 
+            "title": "umf Docs"
+        }, 
+        {
+            "location": "/planung/", 
+            "text": "Planung\n\n\nMockup + Programmablaeufe\n\n\nHome Page\n\n\n\n\nLogin Page\n\n\n\n\nProfil Page\n\n\n\n\nNeu Page\n\n\n\n\nResultat Page\n\n\n\n\nProgrammablauf\n\n\n\n\nKlassendiagramm\n\n\n\n\nDB Diagramm\n\n\n\n\nAufgabenaufteilung\n\n\nsvi:\n\n\n\n\nJavascript framework integration\n\n\nPHP API\n\n\nDatenbank\n\n\n\n\nlwa\n\n\n\n\nFrontend design\n\n\nPHP API\n\n\nJavascript framework integration\n\n\n\n\nZeitplan\n\n\n27.10.2016\n\n\n\n\nsvi: DB Aufsetzen\n\n\nlwa, svi: PHP API Basisfunktionalitaeten implementieren\n\n\n\n\n28.10.2016\n\n\n\n\nlwa: Angular.js einlesen\n\n\nsvi, lwa: Frontend Technologie implementieren (ohne design)\n\n\nsvi: PHP API erweitern\n\n\n\n\n02.11.2016\n\n\n\n\nlwa: Frontend Design (mobile first)\n\n\nsvi, lwa, Frontend Technologie implementieren (ohne design)\n\n\n\n\n03.11.2016\n\n\n\n\nsvi, lwa: Frontend Design abschliessen (desktop \n mobile)\n\n\nsvi, lwa: Ausfuehrlich testen\n\n\n\n\nSchnittstellendefinition\n\n\n\n\nDer browser kommuniziert ueber Angular mit einer PHP API,\nwelche JSON akzeptiert und sendet.  \n\n\nDie PHP API kommuniziert mit einer SQL Datenbank\num die Daten zu speichern und abzurufen.  \n\n\n\n\nJS Framework\n\n\n\n\nAngular.js\n\n\n\n\nPHP Framework\n\n\n\n\nSelbergeschrieben", 
+            "title": "Planung"
+        }, 
+        {
+            "location": "/planung/#planung", 
+            "text": "", 
+            "title": "Planung"
+        }, 
+        {
+            "location": "/planung/#mockup-programmablaeufe", 
+            "text": "", 
+            "title": "Mockup + Programmablaeufe"
+        }, 
+        {
+            "location": "/planung/#home-page", 
+            "text": "", 
+            "title": "Home Page"
+        }, 
+        {
+            "location": "/planung/#login-page", 
+            "text": "", 
+            "title": "Login Page"
+        }, 
+        {
+            "location": "/planung/#profil-page", 
+            "text": "", 
+            "title": "Profil Page"
+        }, 
+        {
+            "location": "/planung/#neu-page", 
+            "text": "", 
+            "title": "Neu Page"
+        }, 
+        {
+            "location": "/planung/#resultat-page", 
+            "text": "", 
+            "title": "Resultat Page"
+        }, 
+        {
+            "location": "/planung/#programmablauf", 
+            "text": "", 
+            "title": "Programmablauf"
+        }, 
+        {
+            "location": "/planung/#klassendiagramm", 
+            "text": "", 
+            "title": "Klassendiagramm"
+        }, 
+        {
+            "location": "/planung/#db-diagramm", 
+            "text": "", 
+            "title": "DB Diagramm"
+        }, 
+        {
+            "location": "/planung/#aufgabenaufteilung", 
+            "text": "", 
+            "title": "Aufgabenaufteilung"
+        }, 
+        {
+            "location": "/planung/#svi", 
+            "text": "Javascript framework integration  PHP API  Datenbank", 
+            "title": "svi:"
+        }, 
+        {
+            "location": "/planung/#lwa", 
+            "text": "Frontend design  PHP API  Javascript framework integration", 
+            "title": "lwa"
+        }, 
+        {
+            "location": "/planung/#zeitplan", 
+            "text": "", 
+            "title": "Zeitplan"
+        }, 
+        {
+            "location": "/planung/#27102016", 
+            "text": "svi: DB Aufsetzen  lwa, svi: PHP API Basisfunktionalitaeten implementieren", 
+            "title": "27.10.2016"
+        }, 
+        {
+            "location": "/planung/#28102016", 
+            "text": "lwa: Angular.js einlesen  svi, lwa: Frontend Technologie implementieren (ohne design)  svi: PHP API erweitern", 
+            "title": "28.10.2016"
+        }, 
+        {
+            "location": "/planung/#02112016", 
+            "text": "lwa: Frontend Design (mobile first)  svi, lwa, Frontend Technologie implementieren (ohne design)", 
+            "title": "02.11.2016"
+        }, 
+        {
+            "location": "/planung/#03112016", 
+            "text": "svi, lwa: Frontend Design abschliessen (desktop   mobile)  svi, lwa: Ausfuehrlich testen", 
+            "title": "03.11.2016"
+        }, 
+        {
+            "location": "/planung/#schnittstellendefinition", 
+            "text": "Der browser kommuniziert ueber Angular mit einer PHP API,\nwelche JSON akzeptiert und sendet.    Die PHP API kommuniziert mit einer SQL Datenbank\num die Daten zu speichern und abzurufen.", 
+            "title": "Schnittstellendefinition"
+        }, 
+        {
+            "location": "/planung/#js-framework", 
+            "text": "Angular.js", 
+            "title": "JS Framework"
+        }, 
+        {
+            "location": "/planung/#php-framework", 
+            "text": "Selbergeschrieben", 
+            "title": "PHP Framework"
+        }
+    ]
+}
