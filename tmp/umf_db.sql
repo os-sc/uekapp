@@ -20,6 +20,11 @@ SET time_zone = "+00:00";
 -- Datenbank: `umf_db`
 --
 
+CREATE DATABASE IF NOT EXISTS umf_db;
+
+USE umf_db;
+
+
 -- --------------------------------------------------------
 
 --
