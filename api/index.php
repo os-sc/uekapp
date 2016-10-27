@@ -3,10 +3,12 @@ class api
 {
     private $path;
     private $params;
+    private $database;
     function __construct($params)
     {
         $this->params = $params;
         $this->path = $this->requireParameter($this->params, 'p');
+        $this->database = new database();
     }
 
     function route($path) {
@@ -45,18 +47,18 @@ class api
     }
 
     function getAllPolls(){
-        // return results
+        $data = $this->database->getAllPolls();
+        $this->httpReturnAsJson(200, $data);
     }
 
     function getNewPolls($count){
-        // loop through all polls
-        // get newest x
-        // return result
+        $data = $this->database->getNewPolls();
+        $this->httpReturnAsJson(200, array_slice($data, 0, $count));
     }
 
     function getPollsByUser($username){
-        // check username exists
-        // return filtered results
+        $data = $this->database->getPollsByUser();
+        $this->httpReturnAsJson(200, $data);
     }
 
     function login($username, $password) {

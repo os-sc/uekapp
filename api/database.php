@@ -23,8 +23,35 @@ class database
         return $this->parseToPoll($data);
     }
 
-    function getUserById($id) {
+    function getPollsByUser($username){
+        $uid = $this->getIdOfUser($username);
+        $data = $this->database->select(
+            "polls",
+            "*",
+            ['users_index' => $uid]
+        );
+        return $this->parseToPoll($data);
+    }
 
+    function getNewPolls(){
+        $data = $this->database->select(
+            "polls",
+            "*",
+            [
+                "public" => true,
+                "ORDER" => "date DESC"
+            ]
+        );
+        return $this->parseToPoll($data);
+    }
+
+    function getUserById($id) {
+        $data = $this->database->select(
+            'users',
+            'username',
+            ['index' => $id]
+        );
+        return $data[0]['username'];
     }
 
     function getIdOfUser($username) {
