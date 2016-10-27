@@ -9,7 +9,7 @@ class user
 
     function __construct($justRegistered = false) {
         if ($justRegistered)
-            $this->registrationDate =
+            $this->registrationDate = intval(date('U'));
     }
 
     function toArray() {

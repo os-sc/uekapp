@@ -54,7 +54,12 @@ class database
         return $data[0]['username'];
     }
 
-    function addUser()
+    function addUser($user){
+        $id = $this->database->insert(
+            'users',
+            $user->toArray()
+        );
+    }
 
     function getIdOfUser($username) {
         $data = $this->database->select(
@@ -62,12 +67,26 @@ class database
             'index',
             ['username' => $username]
         );
-        return $data[0]['index'];
+        return $data[0];
+    }
+
+    function userExists($username) {
+        $data = $this->database->count(
+            'users',
+            'username',
+            ['username' => $username]
+        );
+        if($data > 0) return true;
+        return false;
     }
 
 
     function parseToPoll($data){
         $new = new poll();
+
+        if(!$data || !isset($data))
+            return null;
+
         foreach ($data as $item) {
             $new->id = $item['id'];
             $new->question = $item['question'];
