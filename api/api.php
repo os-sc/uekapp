@@ -1,16 +1,17 @@
 <?php
 class api
 {
-    private $params;
-    private $database;
+    public $params;
+    public $database;
     function __construct($params)
     {
         $this->params = $params;
         $this->database = new database();
     }
 
-    function route() {
-        $path = $this->requireParameter($this->params, 'p');
+    function route($path = null) {
+        if (!isset($path))
+            $path = $this->requireParameter($this->params, 'p');
         switch ($path) {
             case 'getAllPolls':
                 $this->requireMethod('GET');
@@ -24,13 +25,20 @@ class api
                 break;
             case 'getPollsByUser':
                 $this->requireMethod('GET');
-                $this->getAllPolls(
+                $this->getPollsByUser(
                     $this->requireParameter($this->params, 'u')
                 );
                 break;
             case 'login':
                 $this->requireMethod('POST');
                 $this->login(
+                    $this->requireParameter($this->params, 'u'),
+                    $this->requireParameter($this->params, 'pw')
+                );
+                break;
+            case 'register':
+                $this->requireMethod('POST');
+                $this->registerUser(
                     $this->requireParameter($this->params, 'u'),
                     $this->requireParameter($this->params, 'pw')
                 );
@@ -56,7 +64,7 @@ class api
     }
 
     function getPollsByUser($username){
-        $data = $this->database->getPollsByUser();
+        $data = $this->database->getPollsByUser($username);
         $this->httpReturnAsJson(200, $data);
     }
 
@@ -65,6 +73,27 @@ class api
         // hash pw
         // compare
         // return result
+    }
+
+    function registerUser($username, $password) {
+        try {
+            if ($this->database->userExists($username))
+                $this->httpReturn(400, 'Username bereits vergeben.');
+
+            if (strlen($password) < 8)
+                $this->httpReturn(400, 'Passwort muss mind. 8 Zeichen lang sein.');
+
+            $newuser = new user(true);
+            $newuser->name = $username;
+            $newuser->hashedpw = helper::hashPassword($password, $username);
+
+            $this->database->addUser($newuser);
+        }
+        catch(Exception $e) {
+            $this->httpReturn(500, 'Interner Fehler.');
+        }
+
+        $this->httpReturn(200, 'User angelegt.');
     }
 
     function vote($pollId, $answers){
@@ -89,7 +118,7 @@ class api
 
     function requireParameter($collection, $paramName){
         if (!isset($collection[$paramName]))
-            die('Missing Parameter' . $paramName); // TODO: return http error
+            die('Missing Parameter ' . $paramName); // TODO: return http error
         else
             return $collection[$paramName];
     }

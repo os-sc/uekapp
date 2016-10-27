@@ -12,6 +12,12 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'POST')
 else
     die('error 400');
 
+#$newuser = new user(true);
+#$newuser->hashedpw = 'IchBinK1Genie';
+#$newuser->name = 'Bob';
+
+#$api->database->addUser($newuser);
+
 $api->route();
 
 ?>
