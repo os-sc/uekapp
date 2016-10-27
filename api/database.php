@@ -54,6 +54,8 @@ class database
         return $data[0]['username'];
     }
 
+    function addUser()
+
     function getIdOfUser($username) {
         $data = $this->database->select(
             'users',

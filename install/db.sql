@@ -1,4 +1,11 @@
-USE umf_db;
+-- phpMyAdmin SQL Dump
+-- version 4.3.11
+-- http://www.phpmyadmin.net
+--
+-- Host: 127.0.0.1
+-- Erstellungszeit: 27. Okt 2016 um 11:24
+-- Server-Version: 5.6.24
+-- PHP-Version: 5.6.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -12,6 +19,11 @@ SET time_zone = "+00:00";
 --
 -- Datenbank: `umf_db`
 --
+
+CREATE DATABASE IF NOT EXISTS umf_db;
+
+USE umf_db;
+
 
 -- --------------------------------------------------------
 
@@ -27,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `polls` (
   `public` bit(1) NOT NULL,
   `allowmulti` bit(1) NOT NULL,
   `checkdupes` bit(1) NOT NULL,
-  `date` date NOT NULL,
+  `date` int(32) NOT NULL,
   `creator` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -41,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `index` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
   `hashedpw` varchar(250) NOT NULL,
-  `regdate` date NOT NULL
+  `regdate` int(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
