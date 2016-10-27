@@ -70,6 +70,16 @@ class database
         return $data[0];
     }
 
+    function userExists($username) {
+        $data = $this->database->count(
+            'users',
+            'username',
+            ['username' => $username]
+        );
+        if($data > 0) return true;
+        return false;
+    }
+
 
     function parseToPoll($data){
         $new = new poll();

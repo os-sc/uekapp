@@ -11,7 +11,7 @@ class api
 
     function route($path = null) {
         if (!isset($path))
-            $path = $this->requireParameter($this->params, 'p');
+            $path = $this->requireParameter($_GET, 'p');
         switch ($path) {
             case 'getAllPolls':
                 $this->requireMethod('GET');
@@ -27,6 +27,12 @@ class api
                 $this->requireMethod('GET');
                 $this->getPollsByUser(
                     $this->requireParameter($this->params, 'u')
+                );
+                break;
+            case 'addPoll':
+                $this->requireMethod('POST');
+                $this->addPoll(
+                    $this->requireParameter($this->params, 'q')
                 );
                 break;
             case 'login':
@@ -69,10 +75,22 @@ class api
     }
 
     function login($username, $password) {
-        // check username exists
-        // hash pw
-        // compare
-        // return result
+        if (!$this->database->userExists($username))
+            $this->httpReturn(401, 'Ungültiger Username oder Passwort.');
+
+        if (strlen($password) < 8)
+            $this->httpReturn(401, 'Ungültiger Username oder Passwort.');
+
+        $pwhash = helper::hashPassword($password, $username);
+        $result = helper::checkPassword($password, $pwhash);
+
+        if($result) {
+            // TODO: do session handling
+            $this->httpReturn(200, 'Login erfolgreich.');
+        }
+        else {
+            $this->httpReturn(401, 'Ungültiger Username oder Passwort.');
+        }
     }
 
     function registerUser($username, $password) {
@@ -110,6 +128,7 @@ class api
     function httpReturn($code, $data) {
         http_response_code($code);
         echo($data);
+        exit(0);
     }
 
     function decodeJson($json) {
