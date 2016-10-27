@@ -70,6 +70,7 @@ class database
         return $data[0];
     }
 
+
     function parseToPoll($data){
         $new = new poll();
 
