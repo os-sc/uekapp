@@ -16,7 +16,11 @@ class api
                 $this->requireMethod('GET');
                 $this->getAllPolls();
                 break;
-            case ''
+            case 'getPollsByUser':
+                $this->requireMethod('GET');
+                $this->requireParameter($this->params, 'u');
+                $this->getAllPolls();
+                break;
         }
     }
 
