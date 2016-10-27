@@ -62,6 +62,7 @@ class api
     }
 
     function login($username, $password) {
+
         // check username exists
         // hash pw
         // compare

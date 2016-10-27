@@ -63,6 +63,7 @@ class database
         return $data[0]['index'];
     }
 
+
     function parseToPoll($data){
         $new = new poll();
         foreach ($data as $item) {
