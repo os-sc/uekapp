@@ -33,9 +33,9 @@ USE umf_db;
 
 CREATE TABLE IF NOT EXISTS `polls` (
   `index` int(11) NOT NULL,
-  `question` varchar(45) NOT NULL,
-  `answers` varchar(45) NOT NULL,
-  `answercounts` int(11) NOT NULL,
+  `question` varchar(100) NOT NULL,
+  `answers` varchar(500) NOT NULL,
+  `answercounts` varchar(100) NOT NULL,
   `public` bit(1) NOT NULL,
   `allowmulti` bit(1) NOT NULL,
   `checkdupes` bit(1) NOT NULL,
@@ -89,3 +89,5 @@ ALTER TABLE `users`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+INSERT INTO users VALUES (0,"annonymus", "-1", 0);
