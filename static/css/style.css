@@ -19,6 +19,7 @@
 }
 .card-wide > .mdl-card__menu {
     color: #fff;
+
    /* background-color: RGBA(255,255,255,0.7);*/
 }
 
@@ -37,17 +38,59 @@
     font-size: 30px;
 }
 
-.left{
+.login{
+    width: 50%;
+    margin: 0 25% 0 25%!important;
+}
+
+.mdl-textfield{
+    width: 100%;
+}
+
+.mdl-card{
+    margin-top: 5%;
+}
+
+.right{
     float: right;
 }
+
+.mdl-progress{
+    width: 100%;
+    height: 25px;
+}
+
+.vote-title-container>div:first-child {
+
+}
+
+.vote-title-container>div:last-child {
+
+    float: right;
+}
+
+.inline-div{
+    display: inline-block;
+}
+
+.bigger{
+    margin: auto 10px;
+    font-size: 18px;
+    color: RGBA(0,0,0,0.5);
+}
+
 
 h4{
     color: RGBA(255,255,255,0.9);
 }
 @media only screen  and (min-width : 1224px) {
-    .main-container{
+    .main-container {
         width: 50%;
         margin: 0 auto;
+    }
+    .nebeneinander{
+        width: 33%;
+        margin: auto auto;
 
     }
 }
@@ -55,7 +98,7 @@ h4{
 @media only screen  and (max-width : 1224px) {
     .main-container{
         width: 90%;
-        margin-left: 5%;
+        margin: 0 auto;
 
     }
 }
