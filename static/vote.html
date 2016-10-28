@@ -1,0 +1,34 @@
+<form id="form1" method="POST" action="http://localhost/api/?p=vote">
+
+    Was ist die Wurzel von 42? <br />
+    <input type="checkbox" id="a0" name="a0"> Ja<br />
+    <input type="checkbox" id="a1" name="a1"> Zwölfunddreissig<br />
+    <input type="checkbox" id="a2" name="a2"> Nein<br />
+    <input type="checkbox" id="a3" name="a3"> Brokkoli<br />
+    <input type="hidden" name="pid" value="0">
+
+    <input type="button" onclick="submitVote(0)" value="button">
+
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+    function submitVote(pid) {
+        var postBody = 'pid=0' //+ pid.toString()
+        + '&a0=' + $('#a0').prop("checked")
+        + '&a1=' + $('#a1').prop("checked")
+        + '&a2=' + $('#a2').prop("checked")
+        + '&a3=' + $('#a3').prop("checked");
+
+        $.ajax({
+            type:'POST',
+            url:'/api?p=vote',
+            data:postBody,
+            success: function(e, n){
+                console.log(e);
+                console.log(n);
+            }
+        });
+    }
+
+</script>

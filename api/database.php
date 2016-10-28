@@ -111,6 +111,15 @@ class database
         return false;
     }
 
+    function pollExists($pid) {
+        $data = $this->database->count(
+            'polls',
+            'index',
+            ['index' => $pid]
+        );
+        if($data > 0) return true;
+        return false;
+    }
 
     function parseToPoll($data){
         $new = new poll();

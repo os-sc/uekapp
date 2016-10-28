@@ -51,6 +51,9 @@ class api
                     $this->requireParameter($this->params, 'pw')
                 );
                 break;
+            case 'logout':
+                $this->logout();
+                break;
             case 'getLoginInfo':
                 $this->requireMethod('GET');
                 $this->getLoginInfo();
@@ -69,6 +72,8 @@ class api
                     $this->requireParameter($this->params, 'a')
                 );
                 break;
+            case 'makeCoffee':
+                $this->httpReturn(418, 'I\'m a teapot.');
         }
     }
 
@@ -106,7 +111,8 @@ class api
         if($result) {
             if (!session_start())
                 $this->httpReturn(500, 'Interner Fehler.');
-            $_SESSION[$username];
+
+            $_SESSION['username'] = $username;
             $this->httpReturn(200, 'Login erfolgreich.');
         }
         else {
@@ -118,6 +124,13 @@ class api
         if(isset($_SESSION['username']))
             $this->httpReturn(200, $_SESSION['username']);
         $this->httpReturn(400, 'false');
+    }
+
+    function logout(){
+        session_start([
+            'read_and_close'  => true,
+        ]);
+        $this->httpReturn(200, 'Logged out.');
     }
 
     function registerUser($username, $password) {
@@ -177,16 +190,26 @@ class api
     }
 
     function vote($pollId, $answers){
-        $uid = 0;
-        if(isset($_SESSION['username'])) {
-            $uid = $this->database->getIdOfUser($_SESSION['username']);
+        $ipaddr = $_SERVER['REMOTE_ADDR'];
+
+        if(!$this->database->pollExists($pollId))
+            $this->httpReturn(404, 'Keine Umfrage mit dieser ID gefunden.');
+
+        $poll = $this->database->getPollById($pollId);
+        var_dump($poll);
+
+        if($this->database->votersContains($ipaddr))
+            $this->httpReturn(403, 'Du hast bereits abgestummen');
+
+        $i = 0;
+        foreach ($answers as $answer) {
+            if($answer == 1) {
+                $this->database->addVote($pollId, $i);
+            }
+            $i++;
         }
 
-
-
-        // check pollId
-        // save vote
-        // return ok
+        $this->httpReturn(200, 'Gespeichert.');
     }
 
     function httpReturnAsJson($code, $data) {
@@ -205,14 +228,14 @@ class api
 
     function requireParameter($collection, $paramName){
         if (!isset($collection[$paramName]))
-            die('Missing Parameter ' . $paramName); // TODO: return http error
+            $this->httpReturn(400, 'Nicht alle Felder ausgefüllt | ' . $paramName);
         else
             return $collection[$paramName];
     }
 
     function requireMethod($meth){
         if ($_SERVER['REQUEST_METHOD'] != $meth)
-            die('Missing Parameter'); // TODO: return http error
+            $this->httpReturn(400, 'Ungültige anfrage | ' . $_SERVER['REQUEST_METHOD']);
         else
             return;
     }
