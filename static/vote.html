@@ -5,26 +5,33 @@
     <input type="checkbox" id="a1" name="a1"> Zwölfunddreissig<br />
     <input type="checkbox" id="a2" name="a2"> Nein<br />
     <input type="checkbox" id="a3" name="a3"> Brokkoli<br />
-    <input type="hidden" name="pid" value="0">
+    <input type="hidden" name="pid" value="1">
 
-    <input type="button" onclick="submitVote(0)" value="button">
+    <input type="button" onclick="submitVote(2)" value="button">
+
 
 </form>
+
+</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
     function submitVote(pid) {
-        var postBody = 'pid=0' //+ pid.toString()
+        var postBody = 'pid=' + pid.toString()
         + '&a0=' + $('#a0').prop("checked")
         + '&a1=' + $('#a1').prop("checked")
         + '&a2=' + $('#a2').prop("checked")
         + '&a3=' + $('#a3').prop("checked");
-
+console.log(postBody);
         $.ajax({
-            type:'POST',
-            url:'/api?p=vote',
+            method:'POST',
+            url:'/api/?p=vote',
             data:postBody,
             success: function(e, n){
+                console.log(e);
+                console.log(n);
+            },
+            error: function(e, n){
                 console.log(e);
                 console.log(n);
             }
@@ -32,3 +39,5 @@
     }
 
 </script>
+
+<style>body{background: url('http://www.allegrow.be/pictures/sliders/346_detail.jpg?1363814091');}</style>

@@ -45,6 +45,15 @@ class database
         return $this->parseToPoll($data);
     }
 
+    function getPollById($pid) {
+        $data = $this->database->select(
+            'polls',
+            '*',
+            ['index' => $pid]
+        );
+        return $this->parseToPoll($data);
+    }
+
     function getUserById($id) {
         $data = $this->database->select(
             'users',
@@ -80,7 +89,23 @@ class database
             'creator' => $uid
         ];
         $id = $this->database->insert('polls', $data);
-        var_dump($id);
+    }
+
+    function addVote($pid, $vote) {
+        $curr = $this->database->select(
+            'polls',
+            ['index', 'answercounts','voters'],
+            ['index' => $pid]
+        )[0];
+        $arr = explode('|', $curr['answercounts']);
+        $arr[$vote] = intval($arr[$vote]) + 1;
+
+        $new = $arr[0].'|'.$arr[1].'|'.$arr[2].'|'.$arr[3];
+        $this->database->update(
+            'polls',
+            ['answercounts' => $new],
+            ['index' => $pid]
+        );
     }
 
     function getPwOfUser($username) {
@@ -121,6 +146,11 @@ class database
         return false;
     }
 
+    function votersContains($pid, $v) {
+        $poll = $this->getPollById($pid);
+        return $poll->votersContains($v);
+    }
+
     function parseToPoll($data){
         $new = new poll();
 
@@ -128,9 +158,10 @@ class database
             return null;
 
         foreach ($data as $item) {
-            $new->id = $item['id'];
+            $new->id = $item['index'];
             $new->question = $item['question'];
-            $new->answers = $new->parseAnswers($item['answers'], $item['answercounts']);
+            $new->answers = poll::parseAnswers($item['answers'], $item['answercounts']);
+            $new->voters = poll::parseVoters($item['voters']);
             $new->public = $item['public'];
             $new->allowMultiAnswers = $item['allowmulti'];
             $new->checkDuplicate = $item['checkdupes'];

@@ -67,9 +67,14 @@ class api
                 break;
             case 'vote':
                 $this->requireMethod('POST');
-                $this->login(
+                $this->vote(
                     $this->requireParameter($this->params, 'pid'),
-                    $this->requireParameter($this->params, 'a')
+                    [
+                        $this->requireParameter($this->params, 'a0'),
+                        $this->requireParameter($this->params, 'a1'),
+                        $this->requireParameter($this->params, 'a2'),
+                        $this->requireParameter($this->params, 'a3')
+                    ]
                 );
                 break;
             case 'makeCoffee':
@@ -196,14 +201,13 @@ class api
             $this->httpReturn(404, 'Keine Umfrage mit dieser ID gefunden.');
 
         $poll = $this->database->getPollById($pollId);
-        var_dump($poll);
 
-        if($this->database->votersContains($ipaddr))
+        if($poll->votersContains($ipaddr))
             $this->httpReturn(403, 'Du hast bereits abgestummen');
 
         $i = 0;
         foreach ($answers as $answer) {
-            if($answer == 1) {
+            if($answer == 'true') {
                 $this->database->addVote($pollId, $i);
             }
             $i++;
@@ -217,8 +221,8 @@ class api
     }
 
     function httpReturn($code, $data) {
-        http_response_code($code);
         echo($data);
+        http_response_code($code);
         exit(0);
     }
 
