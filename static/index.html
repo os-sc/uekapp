@@ -39,25 +39,25 @@
             <h4>Neue Umfagen</h4>
             <div class="card-wide mdl-card mdl-shadow--2dp">
                 <div class="mdl-card__title">
-                    <h2 class="mdl-card__title-text">Frage</h2>
+                    <h2 class="mdl-card__title-text" phd="question-all-polls">Frage</h2>
                 </div>
                 <div class="mdl-card__supporting-text">
                     <form>
                         <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-1">
                             <input type="checkbox" id="checkbox-1" class="mdl-checkbox__input">
-                            <span class="mdl-checkbox__label">Checkbox</span>
+                            <span class="mdl-checkbox__label" phd="answer-0-checkbox">Checkbox</span>
                         </label>
                         <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-2">
                             <input type="checkbox" id="checkbox-2" class="mdl-checkbox__input">
-                            <span class="mdl-checkbox__label">Checkbox</span>
+                            <span class="mdl-checkbox__label" phd="answer-1-checkbox">Checkbox</span>
                         </label>
                         <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-3">
                             <input type="checkbox" id="checkbox-3" class="mdl-checkbox__input">
-                            <span class="mdl-checkbox__label">Checkbox</span>
+                            <span class="mdl-checkbox__label" phd="answer-2-checkbox">Checkbox</span>
                         </label>
                         <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-4">
                             <input type="checkbox" id="checkbox-4" class="mdl-checkbox__input">
-                            <span class="mdl-checkbox__label">Checkbox</span>
+                            <span class="mdl-checkbox__label" phd="answer-3-checkbox">Checkbox</span>
                         </label>
                     </form>
                 </div>
@@ -180,41 +180,41 @@
                 </div>
                 </div>
             </div>
-        <div id="result-main-container" class="main-container ">
+        <div id="result-main-container" class="main-container hidden">
             <div class="card-wide mdl-card mdl-shadow--2dp">
                 <div class="mdl-card__title">
-                    <h2 class="mdl-card__title-text">Frage</h2>
+                    <h2 class="mdl-card__title-text" phd="question-votes">Frage</h2>
                 </div>
                 <div class="mdl-card__supporting-text">
                     <div class="vote-title-container">
-                        <div class="inline-div ">Antwort 1</div>
-                        <div class="inline-div ">20 Stimmen</div>
+                        <div class="inline-div" phd="answer-0-title">Antwort</div>
+                        <div class="inline-div" phd="answer-0-votes">0 Stimmen</div>
                     </div>
                     <div id="answer-1-progress" class="mdl-progress mdl-js-progress"></div>
                 </div>
                 <div class="mdl-card__supporting-text">
                     <div class="vote-title-container">
-                        <div class="inline-div ">Antwort 2</div>
-                        <div class="inline-div ">3 Stimmen</div>
+                        <div class="inline-div" phd="answer-1-title">Antwort</div>
+                        <div class="inline-div" phd="answer-1-votes">0 Stimmen</div>
                     </div>
                     <div id="answer-2-progress" class="mdl-progress mdl-js-progress"></div>
                 </div>
                 <div class="mdl-card__supporting-text">
                     <div class="vote-title-container">
-                        <div class="inline-div ">Antwort 3</div>
-                        <div class="inline-div ">60 Stimmen</div>
+                        <div class="inline-div" phd="answer-2-title">Antwort</div>
+                        <div class="inline-div" phd="answer-2-votes">0 Stimmen</div>
                     </div>
                     <div id="answer-3-progress" class="mdl-progress mdl-js-progress"></div>
                 </div>
                 <div class="mdl-card__supporting-text">
                     <div class="vote-title-container">
-                        <div class="inline-div ">Antwort 4</div>
-                        <div class="inline-div ">43 Stimmen</div>
+                        <div class="inline-div" phd="answer-3-title">Antwort</div>
+                        <div class="inline-div " phd="answer-3-votes">0 Stimmen</div>
                     </div>
                     <div id="answer-4-progress" class="mdl-progress mdl-js-progress"></div>
                 </div>
                 <div class="mdl-card__actions mdl-card--border">
-                    <p class="bigger">12345 Stimmen</p>
+                    <p class="bigger" phd="total-votes">0 Stimmen</p>
                 </div>
             </div>
         </div>
