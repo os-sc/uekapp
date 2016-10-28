@@ -32,7 +32,16 @@ class api
             case 'addPoll':
                 $this->requireMethod('POST');
                 $this->addPoll(
-                    $this->requireParameter($this->params, 'q')
+                    $this->requireParameter($this->params, 'q'),
+                    [
+                        $this->requireParameter($this->params, 'a0'),
+                        $this->requireParameter($this->params, 'a1'),
+                        $this->requireParameter($this->params, 'a2'),
+                        $this->requireParameter($this->params, 'a3')
+                    ],
+                    $this->requireParameter($this->params, 'pub'),
+                    $this->requireParameter($this->params, 'multi'),
+                    $this->requireParameter($this->params, 'dupes')
                 );
                 break;
             case 'login':
@@ -41,6 +50,10 @@ class api
                     $this->requireParameter($this->params, 'u'),
                     $this->requireParameter($this->params, 'pw')
                 );
+                break;
+            case 'getLoginInfo':
+                $this->requireMethod('GET');
+                $this->getLoginInfo();
                 break;
             case 'register':
                 $this->requireMethod('POST');
@@ -75,22 +88,36 @@ class api
     }
 
     function login($username, $password) {
+        if(isset($_SESSION['username']))
+            $this->httpReturn(400, 'Du bist bereits angemeldet.');
+
         if (!$this->database->userExists($username))
             $this->httpReturn(401, 'Ungültiger Username oder Passwort.');
 
         if (strlen($password) < 8)
             $this->httpReturn(401, 'Ungültiger Username oder Passwort.');
 
-        $pwhash = helper::hashPassword($password, $username);
+        $pwhash = $this->database->getPwOfUser($username);
+        if ($pwhash == '-1')
+            $this->httpReturn(401, 'Ungültiger Username oder Passwort.');
+
         $result = helper::checkPassword($password, $pwhash);
 
         if($result) {
-            // TODO: do session handling
+            if (!session_start())
+                $this->httpReturn(500, 'Interner Fehler.');
+            $_SESSION[$username];
             $this->httpReturn(200, 'Login erfolgreich.');
         }
         else {
             $this->httpReturn(401, 'Ungültiger Username oder Passwort.');
         }
+    }
+
+    function getLoginInfo() {
+        if(isset($_SESSION['username']))
+            $this->httpReturn(200, $_SESSION['username']);
+        $this->httpReturn(400, 'false');
     }
 
     function registerUser($username, $password) {
@@ -106,16 +133,57 @@ class api
             $newuser->hashedpw = helper::hashPassword($password, $username);
 
             $this->database->addUser($newuser);
+            $this->login($username, $password);
         }
         catch(Exception $e) {
             $this->httpReturn(500, 'Interner Fehler.');
         }
-
         $this->httpReturn(200, 'User angelegt.');
     }
 
+    function addPoll($q, $a, $public, $multi, $dupes) {
+        $uid = 0;
+        if(isset($_SESSION['username'])) {
+            $uid = $this->database->getIdOfUser($_SESSION['username']);
+        }
+
+        $answers = '';
+        $answerCounts = '';
+        foreach ($a as $item) {
+            if (strpos($item, '|') !== false)
+                $this->httpReturn(400, 'Antworten können kein "|" enthalten.');
+
+            if (empty($answers)) {
+                $answers = $item;
+                $answerCounts = '0';
+                continue;
+            }
+
+            $answers = $answers.'|'.$item;
+            $answerCounts = $answerCounts.'|0';
+        }
+
+        $now = date('U');
+        $this->database->addPoll(
+            $q,
+            $answers,
+            $answerCounts,
+            $public,
+            $multi,
+            $dupes,
+            $now,
+            $uid);
+        $this->httpReturn(200, 'Neue Umfrage angelegt.');
+    }
+
     function vote($pollId, $answers){
-        // check login
+        $uid = 0;
+        if(isset($_SESSION['username'])) {
+            $uid = $this->database->getIdOfUser($_SESSION['username']);
+        }
+
+
+
         // check pollId
         // save vote
         // return ok

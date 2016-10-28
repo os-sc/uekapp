@@ -61,6 +61,37 @@ class database
         );
     }
 
+    function addPoll($q,
+                     $answers,
+                     $answerCounts,
+                     $public,
+                     $multi,
+                     $dupes,
+                     $now,
+                     $uid) {
+        $data = [
+            'question' => $q,
+            'answers' => $answers,
+            'answercounts' => $answerCounts,
+            'public' => $public,
+            'allowmulti' => $multi,
+            'checkdupes' => $dupes,
+            'date' => $now,
+            'creator' => $uid
+        ];
+        $id = $this->database->insert('polls', $data);
+        var_dump($id);
+    }
+
+    function getPwOfUser($username) {
+        $data = $this->database->select(
+            'users',
+            'hashedpw',
+            ['username' => $username]
+        );
+        return $data[0];
+    }
+
     function getIdOfUser($username) {
         $data = $this->database->select(
             'users',
