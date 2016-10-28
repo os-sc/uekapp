@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS `polls` (
   `question` varchar(100) NOT NULL,
   `answers` varchar(500) NOT NULL,
   `answercounts` varchar(100) NOT NULL,
+  `voters` varchar(500) NOT NULL,
   `public` bit(1) NOT NULL,
   `allowmulti` bit(1) NOT NULL,
   `checkdupes` bit(1) NOT NULL,
