@@ -1,0 +1,61 @@
+.layout-transparent {
+    background: url('https://i.imgur.com/JKDsRHa.png') center / cover;
+}
+.layout-transparent .mdl-layout__header,
+.layout-transparent .mdl-layout__drawer-button {
+    /* This background is dark, so we set text to white. Use 87% black instead if
+       your background is light. */
+    color: white;
+}
+
+.card-wide.mdl-card {
+    width: 100%;
+    background-color: RGBA(255,255,255,0.9);
+}
+.card-wide > .mdl-card__title {
+    color: RGBA(0,0,0,0.5);
+    /*height: 176px;
+    /*background-color: RGBA(255,255,255,0.7);*/
+}
+.card-wide > .mdl-card__menu {
+    color: #fff;
+   /* background-color: RGBA(255,255,255,0.7);*/
+}
+
+.mdl-button--accent{
+    color: #fff !important;
+    font-weight: bold;
+}
+
+.share{
+    color: RGBA(0,0,0,0.5);
+}
+
+.mdl-layout-title{
+    width: 100px;
+    margin: 0 auto;
+    font-size: 30px;
+}
+
+.left{
+    float: right;
+}
+
+h4{
+    color: RGBA(255,255,255,0.9);
+}
+@media only screen  and (min-width : 1224px) {
+    .main-container{
+        width: 50%;
+        margin: 0 auto;
+
+    }
+}
+
+@media only screen  and (max-width : 1224px) {
+    .main-container{
+        width: 90%;
+        margin-left: 5%;
+
+    }
+}
