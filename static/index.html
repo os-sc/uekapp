@@ -26,11 +26,11 @@
     <div class="mdl-layout__drawer">
         <span class="mdl-layout-title">Menu</span>
         <nav class="mdl-navigation">
-            <a class="mdl-navigation__link" href="">Home</a>
-            <a class="mdl-navigation__link" href="">Umfrage erstellen</a>
-            <a class="mdl-navigation__link" href="">Login</a>
-            <a class="mdl-navigation__link" href="">Meine Umfragen</a>
-            <a class="mdl-navigation__link" href="">Logout</a>
+            <a class="mdl-navigation__link" onclick="menuEvent('polls-main-container')" href="">Home</a>
+            <a class="mdl-navigation__link"  onclick="menuEvent('new-polls-main-container')" href="">Umfrage erstellen</a>
+            <a class="mdl-navigation__link" onclick="menuEvent('login-main-container')" href="">Login</a>
+            <a class="mdl-navigation__link" onclick="menuEvent('polls-main-container')" href="">Meine Umfragen</a>
+            <a class="mdl-navigation__link" onclick="menuEvent('login-main-container')" href="">Logout</a>
         </nav>
     </div>
     <main class="mdl-layout__content">
@@ -85,11 +85,11 @@
                 <div class="mdl-card__supporting-text">
                     <form action="#">
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="username-login" required>
+                            <input class="mdl-textfield__input" type="text" id="username-login" phd="username-login" required>
                             <label class="mdl-textfield__label" for="username-login">Username</label>
                         </div>
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="password" id="password-login" required>
+                            <input class="mdl-textfield__input" type="password" id="password-login" phd="password-login" required>
                             <label class="mdl-textfield__label" for="password-login">Passwort</label>
                         </div>
                         <div class="mdl-card__actions mdl-card--border">
@@ -109,15 +109,15 @@
                 <div class="mdl-card__supporting-text">
                     <form action="#">
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="username-reg" required>
+                            <input class="mdl-textfield__input" type="text" id="username-reg" phd="username-reg" required>
                             <label class="mdl-textfield__label" for="username-reg">Username</label>
                         </div>
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="password" id="password-reg" required>
+                            <input class="mdl-textfield__input" type="password" id="password-reg" phd="password-reg" required>
                             <label class="mdl-textfield__label" for="password-reg">Passwort</label>
                         </div>
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="password" id="password-confirm-reg" required>
+                            <input class="mdl-textfield__input" type="password" id="password-confirm-reg" phd="password-confirm-reg" required>
                             <label class="mdl-textfield__label" for="password-confirm-reg">Passwort bestätigen</label>
                         </div>
                         <div class="mdl-card__actions mdl-card--border">
@@ -138,37 +138,37 @@
                 <div class="mdl-card__supporting-text">
                     <form action="#">
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="frage" required>
+                            <input class="mdl-textfield__input" type="text" id="frage" phd="question-new-poll" required>
                             <label class="mdl-textfield__label" for="frage">Frage</label>
                         </div>
 
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="antwort1" required>
+                            <input class="mdl-textfield__input" type="text" id="antwort1" phd="answer-0-new-poll" required>
                             <label class="mdl-textfield__label" for="antwort1">Antwort</label>
                         </div>
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="antwort2" required>
+                            <input class="mdl-textfield__input" type="text" id="antwort2" phd="answer-1-new-poll" required>
                             <label class="mdl-textfield__label" for="antwort2">Antwort</label>
                         </div>
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="antwort3" required>
+                            <input class="mdl-textfield__input" type="text" id="antwort3" phd="answer-2-new-poll" required>
                             <label class="mdl-textfield__label" for="antwort3">Antwort</label>
                         </div>
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="antwort4" required>
+                            <input class="mdl-textfield__input" type="text" id="antwort4" phd="answer-3-new-poll" required>
                             <label class="mdl-textfield__label" for="antwort4">Antwort</label>
                         </div>
 
                         <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect nebeneinander" for="checkbox-multiple">
-                            <input type="checkbox" id="checkbox-multiple" class="mdl-checkbox__input "/>
+                            <input type="checkbox" id="checkbox-multiple" class="mdl-checkbox__input" phd="checkbox-multiple-new-poll"/>
                             <span class="mdl-checkbox__label">Mehrere Antworten</span>
                         </label>
                         <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect nebeneinander" for="checkbox-dupes">
-                            <input type="checkbox" id="checkbox-dupes" class="mdl-checkbox__input "/>
+                            <input type="checkbox" id="checkbox-dupes" class="mdl-checkbox__input" phd="checkbox-dupes-new-poll"/>
                             <span class="mdl-checkbox__label">Mehrmals Abstimmen</span>
                         </label>
                         <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect nebeneinander" for="checkbox-public">
-                            <input type="checkbox" id="checkbox-public" class="mdl-checkbox__input "/>
+                            <input type="checkbox" id="checkbox-public" class="mdl-checkbox__input" phd="checkbox-public-new-pull"/>
                             <span class="mdl-checkbox__label">Öffentlich</span>
                         </label>
 
@@ -221,6 +221,7 @@
     </main>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="js/nav.js"></script>
 <script>
     $('#answer-1-progress')[0].addEventListener('mdl-componentupgraded', function() {
         this.MaterialProgress.setProgress(44);
