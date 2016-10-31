@@ -3,7 +3,8 @@
 class databaseTest extends PHPUnit_Framework_TestCase
 {
     function testGetByIdReturnsCorrectId(){
-        $api = new api(['p' => 'getAllPolls']);
-        $this->assertNotEmpty($api);
+        $_GET = ['p' => 'getPollById'];
+        $data = new api(['pid' => '0']);
+        assertequals($data->id, 0);
     }
 }

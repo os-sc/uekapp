@@ -23,6 +23,12 @@ class api
                     $this->requireParameter($this->params, 'c')
                 );
                 break;
+            case 'getPollById':
+                $this->requireMethod('GET');
+                $this->getPollById(
+                    $this->requireParameter($this->params, 'id')
+                );
+                break;
             case 'getPollsByUser':
                 $this->requireMethod('GET');
                 $this->getPollsByUser(
@@ -94,6 +100,11 @@ class api
 
     function getPollsByUser($username){
         $data = $this->database->getPollsByUser($username);
+        $this->httpReturnAsJson(200, $data);
+    }
+
+    function getPollById($pid) {
+        $data = $this->database->getPollById($pid);
         $this->httpReturnAsJson(200, $data);
     }
 
