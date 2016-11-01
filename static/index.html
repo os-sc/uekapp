@@ -8,8 +8,30 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
     <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.blue_grey-deep_orange.min.css" />
     <link rel="stylesheet" href="css/style.css"/>
-    <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+    <script defer src="js/lib/material.min.js"></script>
+    <script src="js/lib/jquery.min.js"></script>
+    <script src="js/lib/vue.js"></script>
+    <script src="js/main.js"></script>
 
+    <link rel="apple-touch-icon" sizes="57x57" href="img/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="img/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="img/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="img/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="img/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="img/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="img/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="img/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="img/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="img/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="img/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#002B36">
+    <meta name="msapplication-TileImage" content="img/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#002B36">
+
+    <meta name="mobile-web-app-capable" content="yes">
 
 </head>
 <body>
@@ -17,89 +39,107 @@
 <div class="layout-transparent mdl-layout mdl-js-layout">
     <header class="mdl-layout__header mdl-layout__header--transparent">
         <div class="mdl-layout__header-row">
-            <!-- Title -->
             <span class="mdl-layout-title">UMF</span>
-            <!-- Add spacer, to align navigation to the right -->
-
         </div>
     </header>
     <div class="mdl-layout__drawer">
         <span class="mdl-layout-title">Menu</span>
         <nav class="mdl-navigation">
             <a class="mdl-navigation__link" onclick="menuEvent('polls-main-container')" href="#">Home</a>
-            <a class="mdl-navigation__link" onclick="menuEvent('new-polls-main-container')">Umfrage erstellen</a>
-            <a class="mdl-navigation__link" onclick="menuEvent('login-main-container')">Login</a>
-            <a class="mdl-navigation__link" onclick="menuEvent('polls-main-container')">Meine Umfragen</a>
-            <a class="mdl-navigation__link" onclick="menuEvent('login-main-container')">Logout</a>
+            <a class="mdl-navigation__link" onclick="menuEvent('new-poll-main-container')" href="#">Umfrage erstellen</a>
+            <a class="mdl-navigation__link" onclick="menuEvent('login-main-container')" href="#">Login</a>
+            <a class="mdl-navigation__link" onclick="menuEvent('my-polls-main-container')" href="#">Meine Umfragen</a>
+            <a class="mdl-navigation__link" onclick="logout()" href="#">Logout</a>
         </nav>
     </div>
+
     <main class="mdl-layout__content">
 
-        <div id="polls-main-container" class="main-container hidden">
+        <section id="polls-main-container" class="main-container">
             <h4>Neue Umfagen</h4>
-            <div class="card-wide mdl-card mdl-shadow--2dp">
-                <div class="mdl-card__title">
-                    <h2 class="mdl-card__title-text" phd="question-all-polls">Frage</h2>
-                </div>
-                <div class="mdl-card__supporting-text">
-                    <form>
-                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-1">
-                            <input type="checkbox" id="checkbox-1" class="mdl-checkbox__input">
-                            <span class="mdl-checkbox__label" phd="answer-0-checkbox">Checkbox</span>
-                        </label>
-                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-2">
-                            <input type="checkbox" id="checkbox-2" class="mdl-checkbox__input">
-                            <span class="mdl-checkbox__label" phd="answer-1-checkbox">Checkbox</span>
-                        </label>
-                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-3">
-                            <input type="checkbox" id="checkbox-3" class="mdl-checkbox__input">
-                            <span class="mdl-checkbox__label" phd="answer-2-checkbox">Checkbox</span>
-                        </label>
-                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-4">
-                            <input type="checkbox" id="checkbox-4" class="mdl-checkbox__input">
-                            <span class="mdl-checkbox__label" phd="answer-3-checkbox">Checkbox</span>
-                        </label>
-                    </form>
-                </div>
-                <div class="mdl-card__actions mdl-card--border">
-                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent ">
-                        Abstimmen
-                    </button>
-                    <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect right">
-                       Resultate
-                    </button>
-                </div>
-                <div class="mdl-card__menu">
-                    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect share">
-                        <i class="material-icons">share</i>
-                    </button>
+
+            <div class="recipe" v-for="poll in newpolls">
+                <div :id="poll.pid + '-survey-card'" class="card-wide mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text" :id="poll.pid + '-question-title'">{{ poll.question }}</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <form :id="poll.pid + '-survey-form'">
+                            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :for="poll.pid + '-checkbox-0'">
+                                <input type="checkbox" :id="poll.pid + '-checkbox-0'" class="mdl-checkbox__input">
+                                <span class="mdl-checkbox__label" :id="poll.pid + '-answer-0-label'">{{ poll.answer0 }}</span>
+                            </label>
+                            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :for="poll.pid + '-checkbox-1'">
+                                <input type="checkbox" :id="poll.pid + '-checkbox-1'" class="mdl-checkbox__input">
+                                <span class="mdl-checkbox__label" :id="poll.pid + '-answer-1-label'">{{ poll.answer1 }}</span>
+                            </label>
+                            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :for="poll.pid + '-checkbox-2'">
+                                <input type="checkbox" :id="poll.pid + '-checkbox-2'" class="mdl-checkbox__input">
+                                <span class="mdl-checkbox__label" :id="poll.pid + '-answer-2-label'">{{ poll.answer2 }}</span>
+                            </label>
+                            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :for="poll.pid + '-checkbox-3'">
+                                <input type="checkbox" :id="poll.pid + '-checkbox-3'" class="mdl-checkbox__input">
+                                <span class="mdl-checkbox__label" :id="poll.pid + '-answer-3-label'">{{ poll.answer3 }}</span>
+                            </label>
+                        </form>
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" :id="poll.pid + '-vote-button'">
+                            Abstimmen
+                        </button>
+                        <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect right" :id="poll.pid + '-results-button'">
+                            Resultate
+                        </button>
+                    </div>
+                    <div class="mdl-card__menu">
+                        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect share" :id="poll.pid + '-share-button'">
+                            <i class="material-icons">share</i>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div id="login-main-container" class="main-container hidden">
+
+            <script>
+                var newPollsVue = new Vue({
+                    el: '#polls-main-container',
+                    data: {
+                        newpolls: []
+                    },
+                    methods: {
+                        update: function (newdata) {
+                            this.newpolls = newdata;
+                        }
+                    }
+                });
+                $.get('../api-fake/getNewPolls.json', function (response) {
+                    newPollsVue.update(response);
+                });
+            </script>
+
+        </section>
+        <section id="login-main-container" class="main-container hidden">
 
             <div class="card-wide mdl-card mdl-shadow--2dp">
                 <div class="mdl-card__title">
                     <h2 class="mdl-card__title-text">Login</h2>
                 </div>
                 <div class="mdl-card__supporting-text">
-                    <form action="#">
+                    <form id="login-form">
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="username-login" phd="username-login" required>
+                            <input name="u" class="mdl-textfield__input" type="text" id="username-login" required>
                             <label class="mdl-textfield__label" for="username-login">Username</label>
                         </div>
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="password" id="password-login" phd="password-login" required>
+                            <input name="pw" class="mdl-textfield__input" type="password" id="password-login" required>
                             <label class="mdl-textfield__label" for="password-login">Passwort</label>
                         </div>
                         <div class="mdl-card__actions mdl-card--border">
-                            <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent login" value="Login"/>
-
+                            <input id="login-submit" type="button"
+                                   class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent login"
+                                   value="Login"/>
                         </div>
                     </form>
                 </div>
-
-
             </div>
 
             <div class="card-wide mdl-card mdl-shadow--2dp">
@@ -107,80 +147,83 @@
                     <h2 class="mdl-card__title-text">Registrieren</h2>
                 </div>
                 <div class="mdl-card__supporting-text">
-                    <form action="#">
+                    <form id="registration-form">
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="username-reg" phd="username-reg" required>
+                            <input name="u" class="mdl-textfield__input" type="text" id="username-reg" required>
                             <label class="mdl-textfield__label" for="username-reg">Username</label>
                         </div>
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="password" id="password-reg" phd="password-reg" required>
+                            <input name="pw" class="mdl-textfield__input" type="password" id="password-reg" required>
                             <label class="mdl-textfield__label" for="password-reg">Passwort</label>
                         </div>
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="password" id="password-confirm-reg" phd="password-confirm-reg" required>
+                            <input class="mdl-textfield__input" type="password" id="password-confirm-reg" required>
                             <label class="mdl-textfield__label" for="password-confirm-reg">Passwort bestätigen</label>
                         </div>
                         <div class="mdl-card__actions mdl-card--border">
-                            <input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent login" value="Registrieren"/>
-
+                            <input id="register-submit" type="button"
+                                   class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent login"
+                                   value="Registrieren">
                         </div>
                     </form>
-
                 </div>
-
             </div>
-        </div>
-        <div id="new-polls-main-container" class="main-container hidden ">
+        </section>
+        <section id="new-poll-main-container" class="main-container hidden ">
             <div class="card-wide mdl-card mdl-shadow--2dp">
                 <div class="mdl-card__title">
                     <h2 class="mdl-card__title-text">Neue Umfrage erstellen</h2>
                 </div>
                 <div class="mdl-card__supporting-text">
-                    <form action="#">
+                    <form id="new-poll-form">
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="frage" phd="question-new-poll" required>
-                            <label class="mdl-textfield__label" for="frage">Frage</label>
+                            <input class="mdl-textfield__input" type="text" name="q" id="new-question" required>
+                            <label class="mdl-textfield__label" for="new-question">Frage</label>
                         </div>
 
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="antwort1" phd="answer-0-new-poll" required>
-                            <label class="mdl-textfield__label" for="antwort1">Antwort</label>
+                            <input class="mdl-textfield__input" type="text"  name="a0" id="new-answer0">
+                            <label class="mdl-textfield__label" for="new-answer0">1. Antwort</label>
                         </div>
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="antwort2" phd="answer-1-new-poll" required>
-                            <label class="mdl-textfield__label" for="antwort2">Antwort</label>
+                            <input class="mdl-textfield__input" type="text"  name="a1" id="new-answer1">
+                            <label class="mdl-textfield__label" for="new-answer1">2. Antwort</label>
                         </div>
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="antwort3" phd="answer-2-new-poll" required>
-                            <label class="mdl-textfield__label" for="antwort3">Antwort</label>
+                            <input class="mdl-textfield__input" type="text" name="a2" id="new-answer2">
+                            <label class="mdl-textfield__label" for="new-answer2">3. Antwort</label>
                         </div>
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="antwort4" phd="answer-3-new-poll" required>
-                            <label class="mdl-textfield__label" for="antwort4">Antwort</label>
+                            <input class="mdl-textfield__input" type="text" name="a3" id="new-answer3">
+                            <label class="mdl-textfield__label" for="new-answer3">4. Antwort</label>
                         </div>
 
-                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect nebeneinander" for="checkbox-multiple">
-                            <input type="checkbox" id="checkbox-multiple" class="mdl-checkbox__input" phd="checkbox-multiple-new-poll"/>
+                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect alignhor" for="new-checkbox-multiple">
+                            <input type="checkbox" id="new-checkbox-multiple" class="mdl-checkbox__input"/>
                             <span class="mdl-checkbox__label">Mehrere Antworten</span>
                         </label>
-                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect nebeneinander" for="checkbox-dupes">
-                            <input type="checkbox" id="checkbox-dupes" class="mdl-checkbox__input" phd="checkbox-dupes-new-poll"/>
+                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect alignhor" for="new-checkbox-dupes">
+                            <input type="checkbox" id="new-checkbox-dupes" class="mdl-checkbox__input"/>
                             <span class="mdl-checkbox__label">Mehrmals Abstimmen</span>
                         </label>
-                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect nebeneinander" for="checkbox-public">
-                            <input type="checkbox" id="checkbox-public" class="mdl-checkbox__input" phd="checkbox-public-new-pull"/>
+                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect alignhor" for="new-checkbox-public">
+                            <input type="checkbox" id="new-checkbox-public" class="mdl-checkbox__input"/>
                             <span class="mdl-checkbox__label">Öffentlich</span>
                         </label>
 
                         <div class="mdl-card__actions mdl-card--border">
-                            <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent right" value="Speichern"/>
-
+                            <input type="submit" id="new-submit"
+                                   class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent right"
+                                   value="Speichern"/>
                         </div>
                     </form>
                 </div>
                 </div>
-            </div>
-        <div id="result-main-container" class="main-container hidden">
+            </section>
+        <section id="my-polls-main-container" class="main-container hidden">
+            <h4>Meine Umfragen</h4>
+        </section>
+        <section id="result-main-container" class="main-container hidden">
             <div class="card-wide mdl-card mdl-shadow--2dp">
                 <div class="mdl-card__title">
                     <h2 class="mdl-card__title-text" phd="question-votes">Frage</h2>
@@ -217,11 +260,15 @@
                     <p class="bigger" phd="total-votes">0 Stimmen</p>
                 </div>
             </div>
+        </section>
+
+        <div id="toast" aria-live="assertive" aria-atomic="true" aria-relevant="text"  class="mdl-js-snackbar mdl-snackbar">
+            <div class="mdl-snackbar__text"></div>
+            <button type="button" class="mdl-snackbar__action"></button>
         </div>
     </main>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="js/nav.js"></script>
+
 <script>
     $('#answer-1-progress')[0].addEventListener('mdl-componentupgraded', function() {
         this.MaterialProgress.setProgress(44);

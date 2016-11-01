@@ -43,4 +43,17 @@ class poll
         }
     }
 
+    # Self encoding function for potato framework
+    public function potato() {
+        $potato = array();
+        $potato = [
+            'id' => $this->id,
+            '%phcontent%-question-title' => $this->question,
+            '%phcontent%-answer0' => $this->answers[0],
+            '%phcontent%-answer1' => $this->answers[1],
+            '%phcontent%-answer2' => $this->answers[2],
+            '%phcontent%-answer3' => $this->answers[3],
+            'question' => $this->question
+        ];
+    }
 }

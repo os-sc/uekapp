@@ -227,6 +227,14 @@ class api
         $this->httpReturn(200, 'Gespeichert.');
     }
 
+    function httpReturnPotatoSerialized($code, $data) {
+        $potato = array();
+        foreach ($data as $item) {
+
+        }
+        $this->httpReturnAsJson($code, $potato);
+    }
+
     function httpReturnAsJson($code, $data) {
         $this->httpReturn($code, json_encode($data));
     }
