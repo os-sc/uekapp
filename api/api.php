@@ -46,7 +46,6 @@ class api
                         $this->requireParameter($this->params, 'a3')
                     ],
                     $this->requireParameter($this->params, 'pub'),
-                    $this->requireParameter($this->params, 'multi'),
                     $this->requireParameter($this->params, 'dupes')
                 );
                 break;
@@ -172,7 +171,7 @@ class api
         $this->httpReturn(200, 'User angelegt.');
     }
 
-    function addPoll($q, $a, $public, $multi, $dupes) {
+    function addPoll($q, $a, $public, $dupes) {
         $uid = 0;
         if(isset($_SESSION['username'])) {
             $uid = $this->database->getIdOfUser($_SESSION['username']);
@@ -193,6 +192,14 @@ class api
             $answers = $answers.'|'.$item;
             $answerCounts = $answerCounts.'|0';
         }
+        if($public != 'true' || !$public)
+            $public = false;
+        else
+            $public = true;
+        if($dupes != 'true' || !$dupes)
+            $dupes = false;
+        else
+            $dupes = true;
 
         $now = date('U');
         $this->database->addPoll(
@@ -200,7 +207,6 @@ class api
             $answers,
             $answerCounts,
             $public,
-            $multi,
             $dupes,
             $now,
             $uid);
@@ -231,10 +237,13 @@ class api
 
     function httpReturnAsJson($code, $data) {
         header('Content-Type: application/json');
-        $this->httpReturn($code, json_encode($data));
+        echo(json_encode($data));
+        http_response_code($code);
+        exit(0);
     }
 
     function httpReturn($code, $data) {
+        header('Content-Type: text/plain');
         echo($data);
         http_response_code($code);
         exit(0);
@@ -245,7 +254,8 @@ class api
     }
 
     function requireParameter($collection, $paramName){
-        if (!isset($collection[$paramName]))
+        if (!isset($collection[$paramName])
+        || $collection[$paramName] == '')
             $this->httpReturn(400, 'Nicht alle Felder ausgefüllt // ' . $paramName);
         else
             return $collection[$paramName];

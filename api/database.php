@@ -74,7 +74,6 @@ class database
                      $answers,
                      $answerCounts,
                      $public,
-                     $multi,
                      $dupes,
                      $now,
                      $uid) {
@@ -83,7 +82,6 @@ class database
             'answers' => $answers,
             'answercounts' => $answerCounts,
             'public' => $public,
-            'allowmulti' => $multi,
             'checkdupes' => $dupes,
             'date' => $now,
             'creator' => $uid

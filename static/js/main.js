@@ -6,11 +6,17 @@ function menuEvent(s) {
 }
 
 function logout() {
+    document.cookie = 'PHPSESSID' + '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
+    postData('/api/?p=logout', '');
     refreshPage();
 }
 
 function refreshPage() {
     window.location.reload();
+}
+
+function submitVote(pid) {
+
 }
 
 function submitNewData() {
@@ -24,7 +30,8 @@ function submitNewData() {
     if ($('#new-checkbox-dupes').prop('checked')) data += '&dupes=false';
     else data += '&dupes=true';
 
-    postData('/api/?p=newPoll', data);
+    console.log(data);
+    postData('/api/?p=addPoll', data);
 }
 
 function submitLogin(register) {
@@ -58,9 +65,14 @@ function toastMessage(msg) {
 }
 
 function postData(url, data) {
-    $.post(url, data).done(function(response) {
-        toastMessage(response.responseText);
-    }).fail(function(response) {
+    $.post(url, data).always(function(response) {
+        if (response === ''
+        || response === null)
+            return;
+        if(typeof(response) === 'string') {
+            toastMessage(response);
+            return;
+        }
         toastMessage(response.responseText);
     });
 }
@@ -79,5 +91,9 @@ $(function() {
 
     $('#new-submit').click(function(){
         submitNewData();
+    });
+
+    $('.vote-submit').click(function(pid){
+       submitVote(pid);
     });
 });
