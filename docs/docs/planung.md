@@ -83,6 +83,8 @@ um die Daten zu speichern und abzurufen.
 
 * Vue.js
 
+Wir haben das JS Framework geändert, weil wir die Ganzen Features von Angular.js nicht brauchen und wir beide noch keine Erfahrungen mit Angular.js gemacht haben.
+
 ## PHP Framework
 
 * Medoo
