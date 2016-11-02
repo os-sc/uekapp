@@ -2,6 +2,8 @@
 -- version 4.3.11
 -- http://www.phpmyadmin.net
 --
+-- author =  Lara Wäspe
+--
 -- Host: 127.0.0.1
 -- Erstellungszeit: 27. Okt 2016 um 11:24
 -- Server-Version: 5.6.24
@@ -38,7 +40,6 @@ CREATE TABLE IF NOT EXISTS `polls` (
   `answercounts` varchar(100) NOT NULL,
   `voters` varchar(500) NOT NULL,
   `public` bit(1) NOT NULL,
-  `allowmulti` bit(1) NOT NULL,
   `checkdupes` bit(1) NOT NULL,
   `date` int(32) NOT NULL,
   `creator` int(11) NOT NULL
