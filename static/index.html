@@ -64,27 +64,28 @@
                         <h2 class="mdl-card__title-text" :id="poll.pid + '-question-title'">{{ poll.question }}</h2>
                     </div>
                     <div class="mdl-card__supporting-text">
-                        <form :id="poll.pid + '-survey-form'">
+                        <form :id="poll.pid + '-poll-form'">
                             <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :for="poll.pid + '-checkbox-0'">
-                                <input type="checkbox" :id="poll.pid + '-checkbox-0'" class="mdl-checkbox__input">
+                                <input name="a0" type="checkbox" :id="poll.pid + '-checkbox-0'" class="mdl-checkbox__input">
                                 <span class="mdl-checkbox__label" :id="poll.pid + '-answer-0-label'">{{ poll.answer0 }}</span>
                             </label>
                             <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :for="poll.pid + '-checkbox-1'">
-                                <input type="checkbox" :id="poll.pid + '-checkbox-1'" class="mdl-checkbox__input">
+                                <input name="a1" type="checkbox" :id="poll.pid + '-checkbox-1'" class="mdl-checkbox__input">
                                 <span class="mdl-checkbox__label" :id="poll.pid + '-answer-1-label'">{{ poll.answer1 }}</span>
                             </label>
                             <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :for="poll.pid + '-checkbox-2'">
-                                <input type="checkbox" :id="poll.pid + '-checkbox-2'" class="mdl-checkbox__input">
+                                <input name="a2" type="checkbox" :id="poll.pid + '-checkbox-2'" class="mdl-checkbox__input">
                                 <span class="mdl-checkbox__label" :id="poll.pid + '-answer-2-label'">{{ poll.answer2 }}</span>
                             </label>
                             <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :for="poll.pid + '-checkbox-3'">
-                                <input type="checkbox" :id="poll.pid + '-checkbox-3'" class="mdl-checkbox__input">
+                                <input name="a3" type="checkbox" :id="poll.pid + '-checkbox-3'" class="mdl-checkbox__input">
                                 <span class="mdl-checkbox__label" :id="poll.pid + '-answer-3-label'">{{ poll.answer3 }}</span>
                             </label>
+                            <input name="pid" type="hidden" :value="poll.pid">
                         </form>
                     </div>
                     <div class="mdl-card__actions mdl-card--border">
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" :id="poll.pid + '-vote-button'">
+                        <button v-on:click="submitPoll" :data-pid="poll.pid" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" :id="poll.pid + '-vote-button'">
                             Abstimmen
                         </button>
                         <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect right" :id="poll.pid + '-results-button'">
@@ -108,6 +109,9 @@
                     methods: {
                         update: function (newdata) {
                             this.newpolls = newdata;
+                        },
+                        submitPoll: function (event) {
+                            submitVote(event.target.dataset.pid);
                         }
                     }
                 });
@@ -198,10 +202,6 @@
                             <label class="mdl-textfield__label" for="new-answer3">4. Antwort</label>
                         </div>
 
-                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect alignhor" for="new-checkbox-multiple">
-                            <input type="checkbox" id="new-checkbox-multiple" class="mdl-checkbox__input"/>
-                            <span class="mdl-checkbox__label">Mehrere Antworten</span>
-                        </label>
                         <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect alignhor" for="new-checkbox-dupes">
                             <input type="checkbox" id="new-checkbox-dupes" class="mdl-checkbox__input"/>
                             <span class="mdl-checkbox__label">Mehrmals Abstimmen</span>

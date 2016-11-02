@@ -74,9 +74,7 @@ class api
                 $this->requireMethod('POST');
                 $this->vote(
                     $this->requireParameter($this->params, 'pid'),
-                    [
-                        $this->requireParameter($this->params, 'a0')
-                    ]
+                    $this->params
                 );
                 break;
             case 'makeCoffee':
@@ -192,14 +190,10 @@ class api
             $answers = $answers.'|'.$item;
             $answerCounts = $answerCounts.'|0';
         }
-        if($public != 'true' || !$public)
-            $public = false;
-        else
-            $public = true;
-        if($dupes != 'true' || !$dupes)
-            $dupes = false;
-        else
-            $dupes = true;
+        if($public != 'true' || !$public) $public = false;
+        else $public = true;
+        if($dupes != 'true' || !$dupes) $dupes = false;
+        else $dupes = true;
 
         $now = date('U');
         $this->database->addPoll(
@@ -213,21 +207,42 @@ class api
         $this->httpReturn(200, 'Neue Umfrage angelegt.');
     }
 
-    function vote($pollId, $answers){
+    function vote($pollId, $collection){
         $ipaddr = $_SERVER['REMOTE_ADDR'];
 
         if(!$this->database->pollExists($pollId))
             $this->httpReturn(404, 'Keine Umfrage mit dieser ID gefunden.');
 
-        $poll = $this->database->getPollById($pollId);
+        $answers = array();
+        $answers[0] = false;
+        $answers[1] = false;
+        $answers[2] = false;
+        $answers[3] = false;
+        if (isset($collection['a0'])
+            && $collection['a0'] != '')
+            $answers[0] = true;
+        if (isset($collection['a1'])
+            && $collection['a1'] != '')
+            $answers[1] = true;
+        if (isset($collection['a2'])
+            && $collection['a2'] != '')
+            $answers[2] = true;
+        if (isset($collection['a3'])
+            && $collection['a3'] != '')
+            $answers[3] = true;
 
-        if($poll->votersContains($ipaddr))
+        if(!$answers[0] && !$answers[1] && !$answers[2] && !$answers[3])
+            $this->httpReturn(200, 'Nichts angegeben.');
+
+        $poll = $this->database->getPollById($pollId)[0];
+
+        if($poll->votersContains($ipaddr) && $poll->checkDuplicate)
             $this->httpReturn(403, 'Du hast bereits abgestummen');
 
         $i = 0;
         foreach ($answers as $answer) {
-            if($answer == 'true') {
-                $this->database->addVote($pollId, $i);
+            if($answer == true) {
+                $this->database->addVote($pollId, $i, $ipaddr);
             }
             $i++;
         }

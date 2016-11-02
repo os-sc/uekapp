@@ -16,7 +16,10 @@ function refreshPage() {
 }
 
 function submitVote(pid) {
-
+    f = $('#' + pid + '-poll-form');
+    var data = f.serialize();
+    console.log(data);
+    postData('/api/?p=vote', data);
 }
 
 function submitNewData() {
@@ -25,8 +28,6 @@ function submitNewData() {
 
     if ($('#new-checkbox-public').prop('checked')) data += '&pub=true';
     else data += '&pub=false';
-    if ($('#new-checkbox-multiple').prop('checked')) data += '&multi=true';
-    else data += '&multi=false';
     if ($('#new-checkbox-dupes').prop('checked')) data += '&dupes=false';
     else data += '&dupes=true';
 
@@ -64,6 +65,11 @@ function toastMessage(msg) {
     });
 }
 
+function showToast(dataObj) {
+    var toastContainer = document.querySelector('#toast');
+    toastContainer.MaterialSnackbar.showSnackbar(dataObj);
+}
+
 function postData(url, data) {
     $.post(url, data).always(function(response) {
         if (response === ''
@@ -91,9 +97,5 @@ $(function() {
 
     $('#new-submit').click(function(){
         submitNewData();
-    });
-
-    $('.vote-submit').click(function(pid){
-       submitVote(pid);
     });
 });

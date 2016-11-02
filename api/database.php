@@ -89,19 +89,28 @@ class database
         $id = $this->database->insert('polls', $data);
     }
 
-    function addVote($pid, $vote) {
+    function addVote($pid, $vote, $voter) {
         $curr = $this->database->select(
             'polls',
-            ['index', 'answercounts','voters'],
+            ['index', 'answercounts', 'voters'],
             ['index' => $pid]
         )[0];
         $arr = explode('|', $curr['answercounts']);
         $arr[$vote] = intval($arr[$vote]) + 1;
 
+        $voters = $curr['voters'];
+        if(!$voters || $voters == '')
+            $voters=$voter;
+        else
+            $voters = $voters . '|' . $voter;
+
         $new = $arr[0].'|'.$arr[1].'|'.$arr[2].'|'.$arr[3];
         $this->database->update(
             'polls',
-            ['answercounts' => $new],
+            [
+                'answercounts' => $new,
+                'voters' => $voters
+            ],
             ['index' => $pid]
         );
     }
@@ -162,7 +171,6 @@ class database
             $new->answers = poll::parseAnswers($item['answers'], $item['answercounts']);
             $new->voters = poll::parseVoters($item['voters']);
             $new->public = $item['public'];
-            $new->allowMultiAnswers = $item['allowmulti'];
             $new->checkDuplicate = $item['checkdupes'];
             $new->date = $item['date'];
             $arr[] = $new;

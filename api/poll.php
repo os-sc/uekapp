@@ -7,7 +7,6 @@ class poll
     public $answers;
     public $voters;
     public $public;
-    public $allowMultiAnswers;
     public $checkDuplicate;
     public $date;
     public $username;
