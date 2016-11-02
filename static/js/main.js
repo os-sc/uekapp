@@ -24,7 +24,7 @@ function submitNewData() {
     if ($('#new-checkbox-dupes').prop('checked')) data += '&dupes=false';
     else data += '&dupes=true';
 
-    postData('/api?p=newPoll', data);
+    postData('/api/?p=newPoll', data);
 }
 
 function submitLogin(register) {
@@ -38,14 +38,14 @@ function submitLogin(register) {
             return toastMessage('Passwörter sind nicht gleich!');
 
         data = $('#registration-form').serialize();
-        postData('/api?p=register', data);
+        postData('/api/?p=register', data);
     }else{
         if($('#username-reg').val().length < 1
             || $('#password-reg').val().length < 1)
             return;
 
         data = $('#login-form').serialize();
-        postData('/api?p=login', data);
+        postData('/api/?p=login', data);
     }
 }
 
@@ -53,7 +53,7 @@ function toastMessage(msg) {
     var toastContainer = document.querySelector('#toast');
     toastContainer.MaterialSnackbar.showSnackbar({
         message: msg,
-        timeout: 1000
+        timeout: 2000
     });
 }
 

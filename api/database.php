@@ -38,8 +38,8 @@ class database
             "polls",
             "*",
             [
-                "public" => true,
-                "ORDER" => "date DESC"
+                "public" => 1,
+                "ORDER" => "polls.date DESC"
             ]
         );
         return $this->parseToPoll($data);
@@ -152,12 +152,13 @@ class database
     }
 
     function parseToPoll($data){
-        $new = new poll();
+        $arr = array();
 
         if(!$data || !isset($data))
             return null;
 
         foreach ($data as $item) {
+            $new = new poll();
             $new->id = $item['index'];
             $new->question = $item['question'];
             $new->answers = poll::parseAnswers($item['answers'], $item['answercounts']);
@@ -166,8 +167,9 @@ class database
             $new->allowMultiAnswers = $item['allowmulti'];
             $new->checkDuplicate = $item['checkdupes'];
             $new->date = $item['date'];
+            $arr[] = $new;
         }
-        return $new;
+        return $arr;
     }
 
 

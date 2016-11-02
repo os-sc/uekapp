@@ -76,10 +76,7 @@ class api
                 $this->vote(
                     $this->requireParameter($this->params, 'pid'),
                     [
-                        $this->requireParameter($this->params, 'a0'),
-                        $this->requireParameter($this->params, 'a1'),
-                        $this->requireParameter($this->params, 'a2'),
-                        $this->requireParameter($this->params, 'a3')
+                        $this->requireParameter($this->params, 'a0')
                     ]
                 );
                 break;
@@ -95,17 +92,22 @@ class api
 
     function getNewPolls($count){
         $data = $this->database->getNewPolls();
-        $this->httpReturnAsJson(200, array_slice($data, 0, $count));
+        $arr = array();
+        $sliced = array_slice($data, 0, $count);
+        foreach ($sliced as $poll) {
+            $arr[] = $poll->serializeSelf();
+        }
+        $this->httpReturnAsJson(200, $arr);
     }
 
     function getPollsByUser($username){
         $data = $this->database->getPollsByUser($username);
-        $this->httpReturnAsJson(200, $data);
+        $this->httpReturnAsJson(200, $data->serializeSelf());
     }
 
     function getPollById($pid) {
         $data = $this->database->getPollById($pid);
-        $this->httpReturnAsJson(200, $data);
+        $this->httpReturnAsJson(200, $data->serializeSelf());
     }
 
     function login($username, $password) {
@@ -227,15 +229,8 @@ class api
         $this->httpReturn(200, 'Gespeichert.');
     }
 
-    function httpReturnPotatoSerialized($code, $data) {
-        $potato = array();
-        foreach ($data as $item) {
-
-        }
-        $this->httpReturnAsJson($code, $potato);
-    }
-
     function httpReturnAsJson($code, $data) {
+        header('Content-Type: application/json');
         $this->httpReturn($code, json_encode($data));
     }
 
@@ -251,14 +246,14 @@ class api
 
     function requireParameter($collection, $paramName){
         if (!isset($collection[$paramName]))
-            $this->httpReturn(400, 'Nicht alle Felder ausgefüllt | ' . $paramName);
+            $this->httpReturn(400, 'Nicht alle Felder ausgefüllt // ' . $paramName);
         else
             return $collection[$paramName];
     }
 
     function requireMethod($meth){
         if ($_SERVER['REQUEST_METHOD'] != $meth)
-            $this->httpReturn(400, 'Ungültige anfrage | ' . $_SERVER['REQUEST_METHOD']);
+            $this->httpReturn(400, 'Ungültige anfrage // ' . $_SERVER['REQUEST_METHOD']);
         else
             return;
     }

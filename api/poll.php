@@ -43,17 +43,19 @@ class poll
         }
     }
 
-    # Self encoding function for potato framework
-    public function potato() {
-        $potato = array();
-        $potato = [
-            'id' => $this->id,
-            '%phcontent%-question-title' => $this->question,
-            '%phcontent%-answer0' => $this->answers[0],
-            '%phcontent%-answer1' => $this->answers[1],
-            '%phcontent%-answer2' => $this->answers[2],
-            '%phcontent%-answer3' => $this->answers[3],
-            'question' => $this->question
+    public function serializeSelf() {
+        $obj = [
+            'pid' => $this->id,
+            'question' => $this->question,
+            'answer0' => $this->answers[0][1],
+            'answer1' => $this->answers[1][1],
+            'answer2' => $this->answers[2][1],
+            'answer3' => $this->answers[3][1],
+            'answer0-count' => $this->answers[0][2],
+            'answer1-count' => $this->answers[1][2],
+            'answer2-count' => $this->answers[2][2],
+            'answer3-count' => $this->answers[3][2]
         ];
+        return $obj;
     }
 }
