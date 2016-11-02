@@ -24,7 +24,7 @@ INSERT INTO polls (question, answers, answercounts, voters, public, checkdupes, 
 0);
 
 INSERT INTO polls (question, answers, answercounts, voters, public, checkdupes, date, creator)
- VALUES ("Wie heisst Simone zum NAchnamen?","Lengardi|Visgardi|Brokkoli|Viscardi", "12|34|3|3", "", true, false, 1478091800,
+ VALUES ("Wie heisst Simone zum Nachnamen?","Lengardi|Visgardi|Brokkoli|Viscardi", "12|34|3|3", "", true, false, 1478091800,
 0);
 
 INSERT INTO polls (question, answers, answercounts, voters, public, checkdupes, date, creator)
@@ -32,7 +32,7 @@ INSERT INTO polls (question, answers, answercounts, voters, public, checkdupes, 
 0);
 
 INSERT INTO polls (question, answers, answercounts, voters, public, checkdupes, date, creator)
- VALUES ("Welche Sprache hasst Simone?","PHP|JS|Brokkoli|C#", "8|0|5|2", "", true, true, 1478092872,
+ VALUES ("Welche Sprachen hasst Simone?","PHP|JS|Brokkoli|C#", "8|0|5|2", "", true, true, 1478092872,
 0);
 
 INSERT INTO polls (question, answers, answercounts, voters, public, checkdupes, date, creator)
