@@ -40,13 +40,14 @@
 
 * Javascript framework integration
 * PHP API
-* Datenbank
+
 
 #### lwa
 
-* Frontend design
-* PHP API
-* Javascript framework integration
+* HTML
+* CSS
+* Datenbank
+
 
 ## Zeitplan
 
@@ -80,9 +81,22 @@ um die Daten zu speichern und abzurufen.
 
 ## JS Framework
 
-* Angular.js
+* Vue.js
 
 ## PHP Framework
 
-* Selbergeschrieben
+* Medoo
+
+## Schnittstellendefinition
+
+* GET getAllPolls 
+* GET getNewPolls (c = count)
+* GET getPollById (id = index)
+* GET getPollsByUser(u = username)
+* POST addPoll  
+* POST login (u = username, pw = passwort)
+* \* logout  
+* GET getLoginInfo
+* POST register (u = username, pw = passwort)
+* POST vote (pid = pollId, a = ids) 
 
