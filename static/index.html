@@ -56,7 +56,7 @@
     <main class="mdl-layout__content">
 
         <section id="polls-main-container" class="main-container">
-            <h4>Neue Umfagen</h4>
+            <h4>Neue Umfragen</h4>
 
             <div class="poll-survey-card" v-for="poll in newpolls">
                 <div :id="poll.pid + '-survey-card'" class="card-wide mdl-card mdl-shadow--2dp">
@@ -212,7 +212,7 @@
                         </label>
 
                         <div class="mdl-card__actions mdl-card--border">
-                            <input type="submit" id="new-submit"
+                            <input type="button" id="new-submit"
                                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent right"
                                    value="Speichern"/>
                         </div>
