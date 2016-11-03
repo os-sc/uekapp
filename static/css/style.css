@@ -4,7 +4,7 @@
 
 
 .layout-transparent {
-    background: url('https://i.imgur.com/JKDsRHa.png') center / cover;
+    background: url('/static/img/wallpaper.png') center / cover;
 }
 .layout-transparent .mdl-layout__header,
 .layout-transparent .mdl-layout__drawer-button {

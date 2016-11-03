@@ -1,6 +1,6 @@
 use umf_db;
 INSERT INTO polls (question, answers, answercounts, voters, public, checkdupes, date, creator)
- VALUES ("Was wollen wir essen?","Pizza|Kuchen|Brokkoli|Keckse", "3|5|13|9", "", true, true, 1478072518,
+ VALUES ("Was wollen wir essen?","Kohlsuppe|Muskatnuss|Brokkoli|Keckse", "3|5|13|9", "", true, true, 1478072518,
 0);
 
 INSERT INTO polls (question, answers, answercounts, voters, public, checkdupes, date, creator)
@@ -24,7 +24,7 @@ INSERT INTO polls (question, answers, answercounts, voters, public, checkdupes, 
 0);
 
 INSERT INTO polls (question, answers, answercounts, voters, public, checkdupes, date, creator)
- VALUES ("Wie heisst Simone zum Nachnamen?","Lengardi|Visgardi|Brokkoli|Viscardi", "12|34|3|3", "", true, false, 1478091800,
+ VALUES ("Sind diese Fragen sinnvoll?","Nein|Doch|Oh|Brokkoli", "12|34|3|3", "", true, false, 1478091800,
 0);
 
 INSERT INTO polls (question, answers, answercounts, voters, public, checkdupes, date, creator)

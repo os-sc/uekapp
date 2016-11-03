@@ -50,10 +50,10 @@ class poll
             'answer1' => $this->answers[1][1],
             'answer2' => $this->answers[2][1],
             'answer3' => $this->answers[3][1],
-            'answer0-count' => $this->answers[0][2],
-            'answer1-count' => $this->answers[1][2],
-            'answer2-count' => $this->answers[2][2],
-            'answer3-count' => $this->answers[3][2]
+            'answer0count' => $this->answers[0][2],
+            'answer1count' => $this->answers[1][2],
+            'answer2count' => $this->answers[2][2],
+            'answer3count' => $this->answers[3][2]
         ];
         return $obj;
     }

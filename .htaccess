@@ -1,0 +1,15 @@
+<Files "tmp/*">
+Deny from all
+</Files>
+<Files "tests/*">
+Deny from all
+</Files>
+<Files "install/*">
+Deny from all
+</Files>
+<Files "docs/*">
+Deny from all
+</Files>
+<Files "api-fake/*">
+Deny from all
+</Files>

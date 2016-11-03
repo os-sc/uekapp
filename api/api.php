@@ -126,8 +126,6 @@ class api
         $result = helper::checkPassword($password, $pwhash);
 
         if($result) {
-            if (!session_start())
-                $this->httpReturn(500, 'Interner Fehler.');
 
             $_SESSION['username'] = $username;
             $this->httpReturn(200, 'Login erfolgreich.');

@@ -7,11 +7,17 @@ function menuEvent(s, clickMenu) {
 
 function logout() {
     postData('/api/?p=logout', '');
-    refreshPage();
+    updateMenu(false);
+    setTimeout(function () {
+        refreshPage(true);
+    },500);
 }
 
-function refreshPage() {
-    window.location.reload();
+function refreshPage(hard) {
+    if (hard)
+        window.location.href = window.location.href;
+    else
+        window.location.reload();
 }
 
 function submitVote(pid) {
@@ -55,7 +61,7 @@ function submitLogin(register) {
         var url = '/api/?p=login';
     }
     $.post(url, data).done(function () {
-        refreshPage();
+        refreshPage(false);
     }).always(function (response) {
         if (response === ''
             || response === null)
@@ -67,10 +73,6 @@ function submitLogin(register) {
             toastMessage(response.responseText);
         }
     });
-    var result = postData(url, data);
-    if (result) {
-        reloadPage();
-    }
 }
 
 
@@ -98,6 +100,17 @@ function postData(url, data) {
             toastMessage(response.responseText);
         }
     });
+}
+
+function updateMenu(loggedIn) {
+    if (loggedIn) {
+        $('.loggedout-only').addClass('hidden');
+        $('.login-only').removeClass('hidden');
+        setUsername(value);
+    } else {
+        $('.login-only').addClass('hidden');
+        $('.loggedout-only').removeClass('hidden');
+    }
 }
 
 function getParameterByName(name) {
@@ -137,6 +150,7 @@ $(function () {
     var sitePid = getParameterByName('pid');
     var showResults = getParameterByName('results');
 
+    // check if pid and/or results url parameters are set
     if (showResults)
         menuEvent('result-main-container', false);
     else if (sitePid > 0)
@@ -153,13 +167,6 @@ $(function () {
         else
             value = response.responseText;
 
-        if (value !== 'false') {
-            $('.loggedout-only').addClass('hidden');
-            $('.login-only').removeClass('hidden');
-            setUsername(value);
-        } else {
-            $('.login-only').addClass('hidden');
-            $('.loggedout-only').removeClass('hidden');
-        }
+        updateMenu((value !== 'false'));
     });
 });

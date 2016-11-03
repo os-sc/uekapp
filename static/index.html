@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/style.css"/>
     <script defer src="js/lib/material.min.js"></script>
     <script src="js/lib/jquery.min.js"></script>
-    <script src="js/lib/vue.js"></script>
+    <script src="js/lib/vue.min.js"></script>
     <script src="js/main.js"></script>
 
     <link rel="apple-touch-icon" sizes="57x57" href="img/favicon/apple-icon-57x57.png">
@@ -42,7 +42,7 @@
             <span class="mdl-layout-title">UMF</span>
         </div>
     </header>
-    <input type="hidden" id="username-storage" value="">
+    <input type="hidden" id="username-storage" value="anonymous">
     <div class="mdl-layout__drawer">
         <span class="mdl-layout-title">Menu</span>
         <nav class="mdl-navigation">
@@ -60,9 +60,9 @@
             <h4>Neue Umfragen</h4>
 
             <div class="poll-survey-card" v-for="poll in newpolls">
-                <div :id="poll.pid + '-survey-card'" class="card-wide mdl-card mdl-shadow--2dp">
-                    <div class="mdl-card__title">
-                        <h2 class="mdl-card__title-text" :id="poll.pid + '-question-title'">{{ poll.question }}</h2>
+                <div :id="poll.pid + '-survey-card'" :data-pid="poll.pid" class="card-wide mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title" :data-pid="poll.pid">
+                        <h2 class="mdl-card__title-text" :id="poll.pid + '-question-title'" :data-pid="poll.pid">{{ poll.question }}</h2>
                     </div>
                     <div class="mdl-card__supporting-text">
                         <form :id="poll.pid + '-poll-form'">
@@ -89,7 +89,7 @@
                         <button v-on:click="submitPoll" :data-pid="poll.pid" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" :id="poll.pid + '-vote-button'">
                             Abstimmen
                         </button>
-                        <a :href="'/static/?pid=' + poll.pid + '&results=true'">
+                        <a :href="'/static/?pid=' + poll.pid + '&results=true'" :data-pid="poll.pid">
                             <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect right" :id="poll.pid + '-results-button'">
                                 Resultate
                             </button>
@@ -116,7 +116,7 @@
                             this.newpolls = newdata;
                         },
                         submitPoll: function (event) {
-                            submitVote(event.target.dataset.pid);
+                            submitVote(event.currentTarget.dataset.pid);
                         }
                     }
                 });
@@ -284,78 +284,109 @@
                             this.newpolls = newdata;
                         },
                         submitPoll: function (event) {
-                            submitVote(event.target.dataset.pid);
+                            submitVote(event.currentTarget.dataset.pid);
                         }
                     }
                 });
                 $.get('../api/?p=getPollsByUser&u=' + $('#username-storage').val(), function (response) {
-                    newPollsVue.update(response);
+                    myPollsVue.update(response);
                 });
             </script>
         </section>
         <section id="result-main-container" class="main-container hidden">
-            <div class="poll-survey-card" v-for="poll in newpolls">
+
                 <div class="card-wide mdl-card mdl-shadow--2dp">
                     <div class="mdl-card__title">
-                        <h2 class="mdl-card__title-text">Frage</h2>
+                        <h2 class="mdl-card__title-text">{{ poll.question }}</h2>
                     </div>
                     <div class="mdl-card__supporting-text">
                         <div class="vote-title-container">
                             <div class="inline-div">{{ poll.answer0 }}</div>
-                            <div class="inline-div">{{ poll.answer0-count }} Stimmen</div>
+                            <div id="answer0-counter" class="inline-div" :data-votes="poll.answer0count">{{ poll.answer0count }} Stimmen</div>
+                        </div>
+                        <div id="answer-0-progress" class="mdl-progress mdl-js-progress"></div>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <div class="vote-title-container">
+                            <div id="answer1-counter" class="inline-div">{{ poll.answer1 }}</div>
+                            <div class="inline-div" :data-votes="poll.answer1count">{{ poll.answer1count }} Stimmen</div>
                         </div>
                         <div id="answer-1-progress" class="mdl-progress mdl-js-progress"></div>
                     </div>
                     <div class="mdl-card__supporting-text">
                         <div class="vote-title-container">
-                            <div class="inline-div">{{ poll.answer1 }}</div>
-                            <div class="inline-div">{{ poll.answer1-count }} Stimmen</div>
+                            <div class="inline-div">{{ poll.answer2 }}</div>
+                            <div id="answer2-counter" class="inline-div" :data-votes="poll.answer2count">{{ poll.answer2count }} Stimmen</div>
                         </div>
                         <div id="answer-2-progress" class="mdl-progress mdl-js-progress"></div>
                     </div>
                     <div class="mdl-card__supporting-text">
                         <div class="vote-title-container">
-                            <div class="inline-div">{{ poll.answer2 }}</div>
-                            <div class="inline-div">{{ poll.answer2-count }} Stimmen</div>
+                            <div class="inline-div">{{ poll.answer3 }}</div>
+                            <div id="answer3-counter" class="inline-div " :data-votes="poll.answer3count">{{ poll.answer3count }} Stimmen</div>
                         </div>
                         <div id="answer-3-progress" class="mdl-progress mdl-js-progress"></div>
                     </div>
-                    <div class="mdl-card__supporting-text">
-                        <div class="vote-title-container">
-                            <div class="inline-div">{{ poll.answer3 }}</div>
-                            <div class="inline-div ">{{ poll.answer3-count }} Stimmen</div>
-                        </div>
-                        <div id="answer-4-progress" class="mdl-progress mdl-js-progress"></div>
-                    </div>
                     <div class="mdl-card__actions mdl-card--border">
-                        <p class="bigger">0 Stimmen</p>
+                        <p class="bigger">{{ parseInt(poll.answer0count, 10)
+                            + parseInt(poll.answer1count, 10)
+                            + parseInt(poll.answer2count, 10)
+                            + parseInt(poll.answer3count, 10) }} Stimmen</p>
                     </div>
                 </div>
-            </div>
-
             <script>
                 var resultsVue = new Vue({
                     el: '#result-main-container',
                     data: {
-                        newpolls: []
+                        poll: {}
                     },
                     methods: {
                         update: function (newdata) {
-                            this.newpolls = newdata;
+                            this.poll = newdata;
+
+                            $('#answer-0-progress')[0].addEventListener('mdl-componentupgraded', function() {
+                                this.MaterialProgress.setProgress(
+                                        $('#answer0-counter').data('votes')
+                                );
+                            });
+                            $('#answer-1-progress')[0].addEventListener('mdl-componentupgraded', function() {
+                                this.MaterialProgress.setProgress(
+                                        $('#answer1-counter').data('votes')
+                                );
+                            });
+                            $('#answer-2-progress')[0].addEventListener('mdl-componentupgraded', function() {
+                                this.MaterialProgress.setProgress(
+                                        $('#answer2-counter').data('votes')
+                                );
+                            });
+                            $('#answer-3-progress')[0].addEventListener('mdl-componentupgraded', function() {
+                                this.MaterialProgress.setProgress(
+                                        $('#answer3-counter').data('votes')
+                                );
+                            });
                         },
-                        submitPoll: function (event) {
-                            submitVote(event.target.dataset.pid);
+                        enableAutoUpdate: function (self) {
+                            setInterval(function () {
+                                $.get('../api/?p=getPollById&id=' + getParameterByName('pid')).done(function (response) {
+                                    self.update(response);
+                                }).fail(function (response) {
+                                    toastMessage('Fehler beim anzeigen der Daten: '+response.responseText);
+                                });
+                            }, 1000);
                         }
                     }
                 });
                 $.get('../api/?p=getPollById&id=' + getParameterByName('pid'), function (response) {
-                    newPollsVue.update([response]);
+                    resultsVue.update(response);
+                    resultsVue.enableAutoUpdate(resultsVue);
                 });
             </script>
+
+
             <div class="bottom-pad"></div>
         </section>
         <section id="single-poll-main-container" class="main-container hidden">
-            <div class="poll-survey-card" v-for="poll in newpolls">
+            <div class="poll-survey-card">
                 <div :id="poll.pid + '-survey-card'" class="card-wide mdl-card mdl-shadow--2dp">
                     <div class="mdl-card__title">
                         <h2 class="mdl-card__title-text" :id="poll.pid + '-question-title'">{{ poll.question }}</h2>
@@ -385,7 +416,7 @@
                         <button v-on:click="submitPoll" :data-pid="poll.pid" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" :id="poll.pid + '-vote-button'">
                             Abstimmen
                         </button>
-                        <a :href="'/static/?pid=' + poll.pid + '&results=true'">
+                        <a :href="'/static/?pid=' + poll.pid + '&results=true'" :data-pid="poll.pid">
                             <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect right" :id="poll.pid + '-results-button'">
                                 Resultate
                             </button>
@@ -405,19 +436,19 @@
                 var singlePollVue = new Vue({
                     el: '#single-poll-main-container',
                     data: {
-                        newpolls: []
+                        poll: {}
                     },
                     methods: {
                         update: function (newdata) {
-                            this.newpolls = newdata;
+                            this.poll = newdata;
                         },
                         submitPoll: function (event) {
-                            submitVote(event.target.dataset.pid);
+                            submitVote(event.currentTarget.dataset.pid);
                         }
                     }
                 });
                 $.get('../api/?p=getPollById&id=' + getParameterByName('pid'), function (response) {
-                    newPollsVue.update([response]);
+                    singlePollVue.update(response);
                 });
             </script>
         </section>
@@ -429,20 +460,5 @@
         </div>
     </main>
 </div>
-
-<script>
-    /*$('#answer-1-progress')[0].addEventListener('mdl-componentupgraded', function() {
-        this.MaterialProgress.setProgress(44);
-    });
-    $('#answer-2-progress')[0].addEventListener('mdl-componentupgraded', function() {
-        this.MaterialProgress.setProgress(12);
-    });
-    $('#answer-3-progress')[0].addEventListener('mdl-componentupgraded', function() {
-        this.MaterialProgress.setProgress(90);
-    });
-    $('#answer-4-progress')[0].addEventListener('mdl-componentupgraded', function() {
-        this.MaterialProgress.setProgress(64);
-    });*/
-</script>
 </body>
 </html>
