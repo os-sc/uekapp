@@ -10,6 +10,7 @@ class api
     }
 
     function route($path = null) {
+        session_start();
         if (!isset($path))
             $path = $this->requireParameter($_GET, 'p');
         switch ($path) {
@@ -90,8 +91,9 @@ class api
     function getNewPolls($count){
         $data = $this->database->getNewPolls();
         $arr = array();
-        $sliced = array_slice($data, 0, $count);
-        foreach ($sliced as $poll) {
+        if ($count < count($data))
+            $data = array_slice($data, 0, $count);
+        foreach ($data as $poll) {
             $arr[] = $poll->serializeSelf();
         }
         $this->httpReturnAsJson(200, $arr);
@@ -136,15 +138,21 @@ class api
     }
 
     function getLoginInfo() {
-        if(isset($_SESSION['username']))
-            $this->httpReturn(200, $_SESSION['username']);
-        $this->httpReturn(400, 'false');
+        if(session_status() == PHP_SESSION_ACTIVE)
+            if(isset($_SESSION['username']))
+                $this->httpReturn(200, $_SESSION['username']);
+        $this->httpReturn(200, 'false');
     }
 
     function logout(){
-        session_start([
-            'read_and_close'  => true,
-        ]);
+        $_SESSION = array();
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000, $params["path"],
+                $params["domain"], $params["secure"], $params["httponly"]
+            );
+        }
+        session_destroy();
         $this->httpReturn(200, 'Logged out.');
     }
 
@@ -178,6 +186,8 @@ class api
         $answers = '';
         $answerCounts = '';
         foreach ($a as $item) {
+            if (strlen($item) > 100)
+                $this->httpReturn(400, 'Antworten können nicht länger als 100 Zeichen sein.');
             if (strpos($item, '|') !== false)
                 $this->httpReturn(400, 'Antworten können kein "|" enthalten.');
 
@@ -234,7 +244,7 @@ class api
         if(!$answers[0] && !$answers[1] && !$answers[2] && !$answers[3])
             $this->httpReturn(200, 'Nichts angegeben.');
 
-        $poll = $this->database->getPollById($pollId)[0];
+        $poll = $this->database->getPollById($pollId);
 
         if($poll->votersContains($ipaddr) && $poll->checkDuplicate)
             $this->httpReturn(403, 'Du hast bereits abgestummen');

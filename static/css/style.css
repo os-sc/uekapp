@@ -2,6 +2,7 @@
 ** author = Lara Wäspe
 */
 
+
 .layout-transparent {
     background: url('https://i.imgur.com/JKDsRHa.png') center / cover;
 }
@@ -69,9 +70,8 @@
     float: right;
 }
 
-
-.vote-title-container>div:first-child {
-
+.bottom-pad {
+    height: 50px;
 }
 
 .vote-title-container>div:last-child {

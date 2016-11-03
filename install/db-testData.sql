@@ -12,7 +12,7 @@ INSERT INTO polls (question, answers, answercounts, voters, public, checkdupes, 
 0);
 
 INSERT INTO polls (question, answers, answercounts, voters, public, checkdupes, date, creator)
- VALUES ("Wo wollen wir ind den Urlaub?","Italien|Frankreich|Brokkoli Island|Spanien", "1|7|3|9", "", true, false, 1478091799,
+ VALUES ("Wo wollen wir in den Urlaub?","Italien|Frankreich|Brokkolindien|Spanien", "1|7|3|9", "", true, false, 1478091799,
 0);
 
 INSERT INTO polls (question, answers, answercounts, voters, public, checkdupes, date, creator)

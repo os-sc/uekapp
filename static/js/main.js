@@ -1,12 +1,11 @@
-
-function menuEvent(s) {
+function menuEvent(s, clickMenu) {
     $('.main-container').addClass('hidden');
-    $('#' + s ).removeClass('hidden');
-    $('.mdl-layout__obfuscator').click();
+    $('#' + s).removeClass('hidden');
+    if (clickMenu)
+        $('.mdl-layout__obfuscator').click();
 }
 
 function logout() {
-    document.cookie = 'PHPSESSID' + '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
     postData('/api/?p=logout', '');
     refreshPage();
 }
@@ -37,25 +36,43 @@ function submitNewData() {
 
 function submitLogin(register) {
     var data;
-    if(register){
-        if($('#username-reg').val().length < 1)
+    if (register) {
+        if ($('#username-reg').val().length < 1)
             return toastMessage('Username zu kurz!');
-        if($('#password-reg').val().length < 8)
+        if ($('#password-reg').val().length < 8)
             return toastMessage('Passwort zu kurz!');
-        if($('#password-reg').val() !== $('#password-confirm-reg').val())
+        if ($('#password-reg').val() !== $('#password-confirm-reg').val())
             return toastMessage('Passwörter sind nicht gleich!');
 
         data = $('#registration-form').serialize();
-        postData('/api/?p=register', data);
-    }else{
-        if($('#username-reg').val().length < 1
-            || $('#password-reg').val().length < 1)
+        var url = '/api/?p=register';
+    } else {
+        if ($('#username-login').val().length < 1
+            || $('#password-login').val().length < 1)
             return;
 
         data = $('#login-form').serialize();
-        postData('/api/?p=login', data);
+        var url = '/api/?p=login';
+    }
+    $.post(url, data).done(function () {
+        refreshPage();
+    }).always(function (response) {
+        if (response === ''
+            || response === null)
+            return result;
+        if (typeof(response) === 'string') {
+            toastMessage(response);
+        }
+        else {
+            toastMessage(response.responseText);
+        }
+    });
+    var result = postData(url, data);
+    if (result) {
+        reloadPage();
     }
 }
+
 
 function toastMessage(msg) {
     var toastContainer = document.querySelector('#toast');
@@ -71,31 +88,78 @@ function showToast(dataObj) {
 }
 
 function postData(url, data) {
-    $.post(url, data).always(function(response) {
+    $.post(url, data).always(function (response) {
         if (response === ''
-        || response === null)
-            return;
-        if(typeof(response) === 'string') {
+            || response === null)
+            return result;
+        if (typeof(response) === 'string') {
             toastMessage(response);
-            return;
+        } else {
+            toastMessage(response.responseText);
         }
-        toastMessage(response.responseText);
     });
+}
+
+function getParameterByName(name) {
+    var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+function setUsername(name) {
+    $('#username-storage').val(name);
+}
+
+function getUsername() {
+    return $('#username-storage').val();
 }
 
 // EVENT HANDLERS
 // ==============
 
-$(function() {
-    $('#login-submit').click(function(){
+$(function () {
+    $('#login-submit').click(function () {
         submitLogin(false);
     });
 
-    $('#register-submit').click(function(){
+    $('#register-submit').click(function () {
         submitLogin(true);
     });
 
-    $('#new-submit').click(function(){
+    $('#new-submit').click(function () {
         submitNewData();
+    });
+});
+
+// INIT
+// ====
+
+$(function () {
+    var sitePid = getParameterByName('pid');
+    var showResults = getParameterByName('results');
+
+    if (showResults)
+        menuEvent('result-main-container', false);
+    else if (sitePid > 0)
+        menuEvent('single-poll-main-container', false);
+
+    $.get('/api/?p=getLoginInfo').always(function (response) {
+        if (response === ''
+            || response === null)
+            return false;
+
+        value = false;
+        if (typeof(response) === 'string')
+            value = response;
+        else
+            value = response.responseText;
+
+        if (value !== 'false') {
+            $('.loggedout-only').addClass('hidden');
+            $('.login-only').removeClass('hidden');
+            setUsername(value);
+        } else {
+            $('.login-only').addClass('hidden');
+            $('.loggedout-only').removeClass('hidden');
+        }
     });
 });

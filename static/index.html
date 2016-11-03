@@ -42,14 +42,15 @@
             <span class="mdl-layout-title">UMF</span>
         </div>
     </header>
+    <input type="hidden" id="username-storage" value="">
     <div class="mdl-layout__drawer">
         <span class="mdl-layout-title">Menu</span>
         <nav class="mdl-navigation">
-            <a class="mdl-navigation__link" onclick="menuEvent('polls-main-container')" href="#">Home</a>
-            <a class="mdl-navigation__link" onclick="menuEvent('new-poll-main-container')" href="#">Umfrage erstellen</a>
-            <a class="mdl-navigation__link" onclick="menuEvent('login-main-container')" href="#">Login</a>
-            <a class="mdl-navigation__link" onclick="menuEvent('my-polls-main-container')" href="#">Meine Umfragen</a>
-            <a class="mdl-navigation__link" onclick="logout()" href="#">Logout</a>
+            <a class="mdl-navigation__link" onclick="menuEvent('polls-main-container', true)" href="#">Home</a>
+            <a class="mdl-navigation__link" onclick="menuEvent('new-poll-main-container', true)" href="#">Umfrage erstellen</a>
+            <a class="mdl-navigation__link loggedout-only" onclick="menuEvent('login-main-container', true)" href="#">Login</a>
+            <a class="mdl-navigation__link login-only" onclick="menuEvent('my-polls-main-container', true)" href="#">Meine Umfragen</a>
+            <a class="mdl-navigation__link login-only" onclick="logout()" href="#">Logout</a>
         </nav>
     </div>
 
@@ -84,18 +85,22 @@
                             <input name="pid" type="hidden" :value="poll.pid">
                         </form>
                     </div>
-                    <div class="mdl-card__actions mdl-card--border">
+                    <div :data-pid="poll.pid" class="mdl-card__actions mdl-card--border">
                         <button v-on:click="submitPoll" :data-pid="poll.pid" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" :id="poll.pid + '-vote-button'">
                             Abstimmen
                         </button>
-                        <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect right" :id="poll.pid + '-results-button'">
-                            Resultate
-                        </button>
+                        <a :href="'/static/?pid=' + poll.pid + '&results=true'">
+                            <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect right" :id="poll.pid + '-results-button'">
+                                Resultate
+                            </button>
+                        </a>
                     </div>
                     <div class="mdl-card__menu">
-                        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect share" :id="poll.pid + '-share-button'">
-                            <i class="material-icons">share</i>
-                        </button>
+                        <a :href="'/static/?pid=' + poll.pid" :id="poll.pid + '-share-button'">
+                            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect share">
+                                <i class="material-icons">share</i>
+                            </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -115,11 +120,10 @@
                         }
                     }
                 });
-                $.get('../api/?p=getNewPolls&c=10', function (response) {
+                $.get('../api/?p=getNewPolls&c=100', function (response) {
                     newPollsVue.update(response);
                 });
             </script>
-
         </section>
         <section id="login-main-container" class="main-container hidden">
 
@@ -219,48 +223,205 @@
                     </form>
                 </div>
                 </div>
-            </section>
+        </section>
         <section id="my-polls-main-container" class="main-container hidden">
             <h4>Meine Umfragen</h4>
-        </section>
-        <section id="result-main-container" class="main-container hidden">
-            <div class="card-wide mdl-card mdl-shadow--2dp">
-                <div class="mdl-card__title">
-                    <h2 class="mdl-card__title-text" phd="question-votes">Frage</h2>
-                </div>
-                <div class="mdl-card__supporting-text">
-                    <div class="vote-title-container">
-                        <div class="inline-div" phd="answer-0-title">Antwort</div>
-                        <div class="inline-div" phd="answer-0-votes">0 Stimmen</div>
+
+            <div class="poll-survey-card" v-for="poll in newpolls">
+                <div :id="poll.pid + '-survey-card'" class="card-wide mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text" :id="poll.pid + '-question-title'">{{ poll.question }}</h2>
                     </div>
-                    <div id="answer-1-progress" class="mdl-progress mdl-js-progress"></div>
-                </div>
-                <div class="mdl-card__supporting-text">
-                    <div class="vote-title-container">
-                        <div class="inline-div" phd="answer-1-title">Antwort</div>
-                        <div class="inline-div" phd="answer-1-votes">0 Stimmen</div>
+                    <div class="mdl-card__supporting-text">
+                        <form :id="poll.pid + '-poll-form'">
+                            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :for="poll.pid + '-checkbox-0'">
+                                <input name="a0" type="checkbox" :id="poll.pid + '-checkbox-0'" class="mdl-checkbox__input">
+                                <span class="mdl-checkbox__label" :id="poll.pid + '-answer-0-label'">{{ poll.answer0 }}</span>
+                            </label>
+                            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :for="poll.pid + '-checkbox-1'">
+                                <input name="a1" type="checkbox" :id="poll.pid + '-checkbox-1'" class="mdl-checkbox__input">
+                                <span class="mdl-checkbox__label" :id="poll.pid + '-answer-1-label'">{{ poll.answer1 }}</span>
+                            </label>
+                            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :for="poll.pid + '-checkbox-2'">
+                                <input name="a2" type="checkbox" :id="poll.pid + '-checkbox-2'" class="mdl-checkbox__input">
+                                <span class="mdl-checkbox__label" :id="poll.pid + '-answer-2-label'">{{ poll.answer2 }}</span>
+                            </label>
+                            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :for="poll.pid + '-checkbox-3'">
+                                <input name="a3" type="checkbox" :id="poll.pid + '-checkbox-3'" class="mdl-checkbox__input">
+                                <span class="mdl-checkbox__label" :id="poll.pid + '-answer-3-label'">{{ poll.answer3 }}</span>
+                            </label>
+                            <input name="pid" type="hidden" :value="poll.pid">
+                        </form>
                     </div>
-                    <div id="answer-2-progress" class="mdl-progress mdl-js-progress"></div>
-                </div>
-                <div class="mdl-card__supporting-text">
-                    <div class="vote-title-container">
-                        <div class="inline-div" phd="answer-2-title">Antwort</div>
-                        <div class="inline-div" phd="answer-2-votes">0 Stimmen</div>
+                    <div :data-pid="poll.pid" class="mdl-card__actions mdl-card--border">
+                        <button v-on:click="submitPoll" :data-pid="poll.pid" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" :id="poll.pid + '-vote-button'">
+                            Abstimmen
+                        </button>
+                        <a :href="'/static/?pid=' + poll.pid + '&results=true'">
+                            <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect right" :id="poll.pid + '-results-button'">
+                                Resultate
+                            </button>
+                        </a>
                     </div>
-                    <div id="answer-3-progress" class="mdl-progress mdl-js-progress"></div>
-                </div>
-                <div class="mdl-card__supporting-text">
-                    <div class="vote-title-container">
-                        <div class="inline-div" phd="answer-3-title">Antwort</div>
-                        <div class="inline-div " phd="answer-3-votes">0 Stimmen</div>
+                    <div class="mdl-card__menu">
+                        <a :href="'/static/?pid=' + poll.pid" :id="poll.pid + '-share-button'">
+                            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect share">
+                                <i class="material-icons">share</i>
+                            </button>
+                        </a>
                     </div>
-                    <div id="answer-4-progress" class="mdl-progress mdl-js-progress"></div>
-                </div>
-                <div class="mdl-card__actions mdl-card--border">
-                    <p class="bigger" phd="total-votes">0 Stimmen</p>
                 </div>
             </div>
+
+            <script>
+                var myPollsVue = new Vue({
+                    el: '#my-polls-main-container',
+                    data: {
+                        newpolls: []
+                    },
+                    methods: {
+                        update: function (newdata) {
+                            this.newpolls = newdata;
+                        },
+                        submitPoll: function (event) {
+                            submitVote(event.target.dataset.pid);
+                        }
+                    }
+                });
+                $.get('../api/?p=getPollsByUser&u=' + $('#username-storage').val(), function (response) {
+                    newPollsVue.update(response);
+                });
+            </script>
         </section>
+        <section id="result-main-container" class="main-container hidden">
+            <div class="poll-survey-card" v-for="poll in newpolls">
+                <div class="card-wide mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Frage</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <div class="vote-title-container">
+                            <div class="inline-div">{{ poll.answer0 }}</div>
+                            <div class="inline-div">{{ poll.answer0-count }} Stimmen</div>
+                        </div>
+                        <div id="answer-1-progress" class="mdl-progress mdl-js-progress"></div>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <div class="vote-title-container">
+                            <div class="inline-div">{{ poll.answer1 }}</div>
+                            <div class="inline-div">{{ poll.answer1-count }} Stimmen</div>
+                        </div>
+                        <div id="answer-2-progress" class="mdl-progress mdl-js-progress"></div>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <div class="vote-title-container">
+                            <div class="inline-div">{{ poll.answer2 }}</div>
+                            <div class="inline-div">{{ poll.answer2-count }} Stimmen</div>
+                        </div>
+                        <div id="answer-3-progress" class="mdl-progress mdl-js-progress"></div>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <div class="vote-title-container">
+                            <div class="inline-div">{{ poll.answer3 }}</div>
+                            <div class="inline-div ">{{ poll.answer3-count }} Stimmen</div>
+                        </div>
+                        <div id="answer-4-progress" class="mdl-progress mdl-js-progress"></div>
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <p class="bigger">0 Stimmen</p>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                var resultsVue = new Vue({
+                    el: '#result-main-container',
+                    data: {
+                        newpolls: []
+                    },
+                    methods: {
+                        update: function (newdata) {
+                            this.newpolls = newdata;
+                        },
+                        submitPoll: function (event) {
+                            submitVote(event.target.dataset.pid);
+                        }
+                    }
+                });
+                $.get('../api/?p=getPollById&id=' + getParameterByName('pid'), function (response) {
+                    newPollsVue.update([response]);
+                });
+            </script>
+            <div class="bottom-pad"></div>
+        </section>
+        <section id="single-poll-main-container" class="main-container hidden">
+            <div class="poll-survey-card" v-for="poll in newpolls">
+                <div :id="poll.pid + '-survey-card'" class="card-wide mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text" :id="poll.pid + '-question-title'">{{ poll.question }}</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <form :id="poll.pid + '-poll-form'">
+                            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :for="poll.pid + '-checkbox-0'">
+                                <input name="a0" type="checkbox" :id="poll.pid + '-checkbox-0'" class="mdl-checkbox__input">
+                                <span class="mdl-checkbox__label" :id="poll.pid + '-answer-0-label'">{{ poll.answer0 }}</span>
+                            </label>
+                            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :for="poll.pid + '-checkbox-1'">
+                                <input name="a1" type="checkbox" :id="poll.pid + '-checkbox-1'" class="mdl-checkbox__input">
+                                <span class="mdl-checkbox__label" :id="poll.pid + '-answer-1-label'">{{ poll.answer1 }}</span>
+                            </label>
+                            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :for="poll.pid + '-checkbox-2'">
+                                <input name="a2" type="checkbox" :id="poll.pid + '-checkbox-2'" class="mdl-checkbox__input">
+                                <span class="mdl-checkbox__label" :id="poll.pid + '-answer-2-label'">{{ poll.answer2 }}</span>
+                            </label>
+                            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :for="poll.pid + '-checkbox-3'">
+                                <input name="a3" type="checkbox" :id="poll.pid + '-checkbox-3'" class="mdl-checkbox__input">
+                                <span class="mdl-checkbox__label" :id="poll.pid + '-answer-3-label'">{{ poll.answer3 }}</span>
+                            </label>
+                            <input name="pid" type="hidden" :value="poll.pid">
+                        </form>
+                    </div>
+                    <div :data-pid="poll.pid" class="mdl-card__actions mdl-card--border">
+                        <button v-on:click="submitPoll" :data-pid="poll.pid" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" :id="poll.pid + '-vote-button'">
+                            Abstimmen
+                        </button>
+                        <a :href="'/static/?pid=' + poll.pid + '&results=true'">
+                            <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect right" :id="poll.pid + '-results-button'">
+                                Resultate
+                            </button>
+                        </a>
+                    </div>
+                    <div class="mdl-card__menu">
+                        <a :href="'/static/?pid=' + poll.pid" :id="poll.pid + '-share-button'">
+                            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect share">
+                                <i class="material-icons">share</i>
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                var singlePollVue = new Vue({
+                    el: '#single-poll-main-container',
+                    data: {
+                        newpolls: []
+                    },
+                    methods: {
+                        update: function (newdata) {
+                            this.newpolls = newdata;
+                        },
+                        submitPoll: function (event) {
+                            submitVote(event.target.dataset.pid);
+                        }
+                    }
+                });
+                $.get('../api/?p=getPollById&id=' + getParameterByName('pid'), function (response) {
+                    newPollsVue.update([response]);
+                });
+            </script>
+        </section>
+        <div class="bottom-pad"></div>
 
         <div id="toast" aria-live="assertive" aria-atomic="true" aria-relevant="text"  class="mdl-js-snackbar mdl-snackbar">
             <div class="mdl-snackbar__text"></div>
@@ -270,7 +431,7 @@
 </div>
 
 <script>
-    $('#answer-1-progress')[0].addEventListener('mdl-componentupgraded', function() {
+    /*$('#answer-1-progress')[0].addEventListener('mdl-componentupgraded', function() {
         this.MaterialProgress.setProgress(44);
     });
     $('#answer-2-progress')[0].addEventListener('mdl-componentupgraded', function() {
@@ -281,7 +442,7 @@
     });
     $('#answer-4-progress')[0].addEventListener('mdl-componentupgraded', function() {
         this.MaterialProgress.setProgress(64);
-    });
+    });*/
 </script>
 </body>
 </html>

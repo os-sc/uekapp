@@ -51,7 +51,7 @@ class database
             '*',
             ['index' => $pid]
         );
-        return $this->parseToPoll($data);
+        return $this->parseToPoll($data)[0];
     }
 
     function getUserById($id) {
